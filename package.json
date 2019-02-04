@@ -9,13 +9,15 @@
   "author": "tkmct<1220t.takamichi@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@layer2/wallet": "0.0.6",
     "@zeit/next-typescript": "^1.1.1",
     "next": "^7.0.2",
     "next-redux-wrapper": "^2.0.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@types/next": "^7.0.8",
