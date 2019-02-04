@@ -6,13 +6,13 @@ interface StateProps {
 }
 
 class App extends React.Component<StateProps> {
-  getInitialProps({ ctx }) {
-    ctx.store.dispatch({ type: 'FOO', payload: 'foo' })
+  public static getInitialProps({ store }) {
+    store.dispatch({ type: 'FOO', payload: 'foo' })
   }
 
-  render() {
-    const { foo } = this.props;
-    
+  public render() {
+    const { foo } = this.props
+
     return <div>{foo}</div>
   }
 }

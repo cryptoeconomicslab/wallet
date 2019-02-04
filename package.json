@@ -21,6 +21,7 @@
     "@types/next": "^7.0.8",
     "@types/next-redux-wrapper": "^2.0.2",
     "@types/react-redux": "^7.0.1",
+    "@types/styled-jsx": "^2.2.7",
     "prettier": "^1.16.4",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
