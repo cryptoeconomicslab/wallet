@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "next src",
+    "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },
   "author": "tkmct<1220t.takamichi@gmail.com>",

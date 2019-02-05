@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { AppState } from '../redux/modules'
 import {
   loadWallet,
-  State as ChamberWalletState
+  State as ChamberWalletState,
+  WALLET_STATUS
 } from '../redux/modules/chamberWallet'
 
 interface StateProps {
@@ -18,13 +19,27 @@ interface DispatchProps {
 class App extends React.Component<StateProps & DispatchProps> {
   public componentDidMount() {
     const { chamberWallet, loadWallet } = this.props
-    if (!chamberWallet.initialized) {
+    const status = chamberWallet.status
+    if (status === WALLET_STATUS.INITIAL || status === WALLET_STATUS.ERROR) {
       loadWallet()
     }
   }
 
   public render() {
-    return <div>Hello</div>
+    const { chamberWallet } = this.props
+    if (chamberWallet.status === WALLET_STATUS.INITIAL) {
+      return <div>Wallet is not loaded. Please import.</div>
+    }
+
+    if (chamberWallet.status === WALLET_STATUS.LOADING) {
+      return <div>Importing Wallet</div>
+    }
+
+    if (chamberWallet.status === WALLET_STATUS.ERROR) {
+      return <div>something went wrong. Please import wallet again</div>
+    }
+
+    return <div>Wallet Imported</div>
   }
 }
 
