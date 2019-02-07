@@ -2,15 +2,17 @@ import * as React from 'react'
 import Button from '../common/Button'
 import { BigNumber } from 'ethers/utils'
 import colors from '../../constants/colors'
+import { DEPOSIT_STATUS } from 'src/redux/modules/chamberWallet/deposit'
 
 interface Props {
   balance: BigNumber
+  depositStatus: DEPOSIT_STATUS
   handleDeposit: (e: React.SyntheticEvent) => void
 }
 
 export default class Card extends React.Component<Props> {
   public render() {
-    const { balance } = this.props
+    const { balance, depositStatus } = this.props
 
     return (
       <div className="container">
@@ -24,6 +26,7 @@ export default class Card extends React.Component<Props> {
         </div>
         <div>
           {/* Control section */}
+          {depositStatus}
           <Button onClick={this.props.handleDeposit}>Deposit 1eth</Button>
         </div>
         <style jsx>{`

@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux'
-import delay from '../../utils/delay'
 import { ChamberWallet } from '@layer2/wallet'
-import WalletFactory from '../../helpers/wallet'
+import WalletFactory from '../../../helpers/wallet'
 
 // CONSTANTS
 export enum WALLET_STATUS {
@@ -42,12 +41,12 @@ export const clearWalletError = () => ({
 export interface State {
   status: WALLET_STATUS
   error: Error | null
-  wallet: ChamberWallet | null
+  ref: ChamberWallet | null
 }
 
 const initialState: State = {
   status: WALLET_STATUS.INITIAL,
-  wallet: null,
+  ref: null,
   error: null
 }
 
@@ -67,7 +66,7 @@ const reducer = (state: State = initialState, action: WalletAction): State => {
       return {
         ...state,
         status: WALLET_STATUS.LOADED,
-        wallet: action.payload
+        ref: action.payload
       }
     case WALLET_ACTION_TYPES.LOAD_WALLET_FAIL:
       return {
@@ -93,8 +92,6 @@ export const loadWallet = () => {
   return async (dispatch: Dispatch) => {
     dispatch(loadWalletStart())
 
-    await delay(2000)
-    // TODO: load required data from appropriate data source like metamask
     const wallet = WalletFactory.createWallet()
     dispatch(loadWalletSuccess(wallet))
   }
