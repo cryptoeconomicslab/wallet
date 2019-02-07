@@ -7,6 +7,7 @@ import {
   State as ChamberWalletState,
   WALLET_STATUS
 } from '../redux/modules/chamberWallet'
+import Card from '../components/wallet/Card'
 
 interface StateProps {
   chamberWallet: ChamberWalletState
@@ -39,7 +40,10 @@ class App extends React.Component<StateProps & DispatchProps> {
       return <div>something went wrong. Please import wallet again</div>
     }
 
-    return <div>Wallet Imported</div>
+    const { wallet } = chamberWallet
+    const balance = wallet.getBalance()
+
+    return <Card balance={balance} />
   }
 }
 

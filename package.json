@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "next src",
+    "start": "next src -p 8080",
     "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },
   "author": "tkmct<1220t.takamichi@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@layer2/wallet": "0.0.12",
     "@zeit/next-typescript": "^1.1.1",
     "next": "^7.0.2",
     "next-redux-wrapper": "^2.0.0",

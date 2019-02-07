@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux'
 import { MockChamberWallet } from '../../mocks/mockChamberWallet'
 import delay from '../../utils/delay'
+import WalletFactory from '../../helpers/wallet'
 
 // CONSTANTS
 export enum WALLET_STATUS {
@@ -94,7 +95,7 @@ export const loadWallet = () => {
 
     await delay(2000)
     // TODO: load required data from appropriate data source like metamask
-    const wallet = new MockChamberWallet()
+    const wallet = WalletFactory.createWallet()
     dispatch(loadWalletSuccess(wallet))
   }
 }
