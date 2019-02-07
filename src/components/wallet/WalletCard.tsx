@@ -16,7 +16,7 @@ import {
 import UTXOList from './UTXOList'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
-import { FONT_SIZE, PADDING, BORDER } from '../../constants/size'
+import { FONT_SIZE, PADDING, BORDER, MARGIN } from '../../constants/size'
 import colors from '../../constants/colors'
 
 interface Props {
@@ -33,7 +33,18 @@ interface DispatchProps {
   deposit: (ether: number) => void
 }
 
-class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
+interface State {
+  depositAmount: number
+}
+
+class WalletCard extends React.Component<
+  Props & StateProps & DispatchProps,
+  State
+> {
+  public state = {
+    depositAmount: 1
+  }
+
   public componentDidMount() {
     const { wallet, loadWallet } = this.props
     const status = wallet.status
@@ -48,6 +59,7 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
       return <div>Wallet is not loaded. Please import.</div>
     }
 
+    // Maybe no need this status
     if (wallet.status === WALLET_STATUS.LOADING) {
       return <div>Importing Wallet</div>
     }
@@ -81,12 +93,23 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
           {/* Control section */}
           <h3 className="control-title">DEPOSIT</h3>
           <div className="deposit-control">
+            <div>
+              <select
+                className="deposit-amount-select"
+                onChange={this.handleChangeDepositAmount}
+              >
+                <option value={1}>1 ETH</option>
+                <option value={2}>2 ETH</option>
+                <option value={5}>5 ETH</option>
+                <option value={10}>10 ETH</option>
+              </select>
+            </div>
             <div className="controls">
               <Button
                 disabled={depositStatus === DEPOSIT_STATUS.LOADING}
-                onClick={() => this.handleDeposit(1)}
+                onClick={this.handleDeposit}
               >
-                Deposit 1eth
+                Deposit
               </Button>
               {depositStatus === DEPOSIT_STATUS.LOADING && (
                 <>
@@ -148,6 +171,20 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
             align-items: center;
           }
 
+          .deposit-control > .controls {
+            display: flex;
+            align-items: center;
+          }
+
+          .deposit-amount-select {
+            color: ${colors.TEXT_MAIN};
+            background-color: transparent;
+            border: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
+            font-size: ${FONT_SIZE.MEDIUM};
+            margin-right: ${MARGIN.MEDIUM};
+            padding: ${PADDING.MEDIUM};
+          }
+
           .deposit-title {
             font-size: ${FONT_SIZE.MEDIUM};
           }
@@ -156,9 +193,14 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
     )
   }
 
-  private handleDeposit = (eth?: number) => {
-    const val = eth || 1
-    this.props.deposit(val)
+  private handleDeposit = () => {
+    this.props.deposit(this.state.depositAmount)
+  }
+
+  private handleChangeDepositAmount = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    this.setState({ depositAmount: Number(e.target.value) })
   }
 }
 
