@@ -1,21 +1,63 @@
 import * as React from 'react'
-import { BigNumber } from 'ethers/utils'
-import colors from '../../constants/colors'
-import { DEPOSIT_STATUS } from '../../redux/modules/chamberWallet/deposit'
-import { FONT_SIZE, PADDING } from '../../constants/size'
+import { connect } from 'react-redux'
+import { Dispatch, bindActionCreators } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { AppState } from '../../redux/modules'
+import {
+  DEPOSIT_STATUS,
+  State as DepositState,
+  deposit
+} from '../../redux/modules/chamberWallet/deposit'
+import {
+  WALLET_STATUS,
+  State as WalletState,
+  loadWallet
+} from '../../redux/modules/chamberWallet/wallet'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
+import { FONT_SIZE, PADDING } from '../../constants/size'
+import colors from '../../constants/colors'
 
 interface Props {
   walletName: string
-  balance: BigNumber
-  depositStatus: DEPOSIT_STATUS
-  handleDeposit: (e: React.SyntheticEvent) => void
 }
 
-export default class WalletCard extends React.Component<Props> {
+interface StateProps {
+  wallet: WalletState
+  depositState: DepositState
+}
+
+interface DispatchProps {
+  loadWallet: () => void
+  deposit: (ether: number) => void
+}
+
+class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
+  public componentDidMount() {
+    const { wallet, loadWallet } = this.props
+    const status = wallet.status
+    if (status === WALLET_STATUS.INITIAL || status === WALLET_STATUS.ERROR) {
+      loadWallet()
+    }
+  }
+
   public render() {
-    const { walletName, balance, depositStatus } = this.props
+    const { walletName, wallet } = this.props
+    if (wallet.status === WALLET_STATUS.INITIAL) {
+      return <div>Wallet is not loaded. Please import.</div>
+    }
+
+    if (wallet.status === WALLET_STATUS.LOADING) {
+      return <div>Importing Wallet</div>
+    }
+
+    if (wallet.status === WALLET_STATUS.ERROR) {
+      return <div>something went wrong. Please import wallet again</div>
+    }
+
+    const { ref } = wallet
+    const balance = ref.getBalance()
+    const depositStatus = this.props.depositState.status
 
     return (
       <main className="container">
@@ -37,7 +79,7 @@ export default class WalletCard extends React.Component<Props> {
           <div className="deposit-control">
             <Button
               disabled={depositStatus === DEPOSIT_STATUS.LOADING}
-              onClick={this.props.handleDeposit}
+              onClick={() => this.handleDeposit(1)}
             >
               Deposit 1eth
             </Button>
@@ -98,4 +140,22 @@ export default class WalletCard extends React.Component<Props> {
       </main>
     )
   }
+
+  private handleDeposit = (eth?: number) => {
+    const val = eth || 1
+    this.props.deposit(val)
+  }
 }
+
+export default connect(
+  (state: AppState): StateProps => ({
+    wallet: state.chamberWallet.wallet,
+    depositState: state.chamberWallet.deposit
+  }),
+  (dispatch: Dispatch): DispatchProps => ({
+    loadWallet: bindActionCreators(loadWallet, dispatch),
+    deposit: (ether: number) => {
+      ;(dispatch as ThunkDispatch<void, AppState, any>)(deposit(ether))
+    }
+  })
+)(WalletCard)
