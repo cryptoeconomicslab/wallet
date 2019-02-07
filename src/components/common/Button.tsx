@@ -33,12 +33,22 @@ function getSizeStyle(size?: Size) {
   }
 }
 
+function filterGenericProps(props: any) {
+  const domProps = {
+    ...props
+  }
+
+  delete domProps.customSize
+  return domProps
+}
+
 export default (props: React.HTMLProps<HTMLButtonElement> & Props) => {
   const { children, customSize } = props
+  const domProps = filterGenericProps(props)
   const sizeStyle = getSizeStyle(customSize)
 
   return (
-    <button {...props}>
+    <button {...domProps}>
       {children}
       <style jsx>{`
         button {
