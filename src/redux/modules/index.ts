@@ -1,17 +1,12 @@
-// root reducer file.
-// recommend combineReducer and default export it.
+import { combineReducers } from 'redux'
+import chamberWalletReducer, {
+  State as ChamberWalletState
+} from './chamberWallet'
 
-export interface State {
-  foo: any
+export interface AppState {
+  chamberWallet: ChamberWalletState
 }
 
-const reducer = (state: State = { foo: '' }, action): State => {
-  switch (action.type) {
-    case 'FOO':
-      return { ...state, foo: action.payload }
-    default:
-      return state
-  }
-}
-
-export default reducer
+export default combineReducers({
+  chamberWallet: chamberWalletReducer
+})

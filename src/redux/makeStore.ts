@@ -1,6 +1,8 @@
-import { createStore } from 'redux'
-import reducer, { State } from './modules'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
-export default (initialState: State) => {
-  return createStore(reducer, initialState)
+import reducer from './modules'
+
+export default initialState => {
+  return createStore(reducer, initialState, applyMiddleware(thunkMiddleware))
 }

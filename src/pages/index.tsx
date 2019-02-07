@@ -1,20 +1,20 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import WalletCard from '../components/wallet/WalletCard'
+import { FONT_SIZE } from '../constants/size'
 
-interface StateProps {
-  foo: string
-}
-
-class App extends React.Component<StateProps> {
-  public static getInitialProps({ store }) {
-    store.dispatch({ type: 'FOO', payload: 'foo' })
-  }
-
+export default class App extends React.Component {
   public render() {
-    const { foo } = this.props
-
-    return <div>{foo}</div>
+    return (
+      <div>
+        <h1 className="title">Wallets</h1>
+        <WalletCard walletName="Chamber Wallet" />
+        <style jsx>{`
+          .title {
+            font-size: ${FONT_SIZE.LARGE};
+            padding: 1.2rem;
+          }
+        `}</style>
+      </div>
+    )
   }
 }
-
-export default connect(state => state)(App)
