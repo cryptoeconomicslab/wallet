@@ -28,6 +28,7 @@ export default class MyDocument extends Document {
               box-sizing: border-box;
               font-family: Open Sans, sans-serif;
               font-weight: 400;
+              font-size: 1.6rem;
               line-height: 1.6;
             }
           `}</style>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@layer2/wallet": "0.0.12",
     "@zeit/next-typescript": "^1.1.1",
+    "ethers": "^4.0.23",
     "next": "^7.0.2",
     "next-redux-wrapper": "^2.0.0",
     "react": "^16.7.0",

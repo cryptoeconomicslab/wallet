@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
-import { MockChamberWallet } from '../../mocks/mockChamberWallet'
 import delay from '../../utils/delay'
+import { ChamberWallet } from '@layer2/wallet'
 import WalletFactory from '../../helpers/wallet'
 
 // CONSTANTS
@@ -24,7 +24,7 @@ export const loadWalletStart = () => ({
   type: WALLET_ACTION_TYPES.LOAD_WALLET_START
 })
 
-export const loadWalletSuccess = (wallet: MockChamberWallet) => ({
+export const loadWalletSuccess = (wallet: ChamberWallet) => ({
   type: WALLET_ACTION_TYPES.LOAD_WALLET_SUCCESS,
   payload: wallet
 })
@@ -42,7 +42,7 @@ export const clearWalletError = () => ({
 export interface State {
   status: WALLET_STATUS
   error: Error | null
-  wallet: MockChamberWallet | null
+  wallet: ChamberWallet | null
 }
 
 const initialState: State = {

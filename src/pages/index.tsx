@@ -43,7 +43,9 @@ class App extends React.Component<StateProps & DispatchProps> {
     const { wallet } = chamberWallet
     const balance = wallet.getBalance()
 
-    return <Card balance={balance} />
+    return (
+      <Card balance={balance} handleDeposit={() => wallet.deposit('1.0')} />
+    )
   }
 }
 
