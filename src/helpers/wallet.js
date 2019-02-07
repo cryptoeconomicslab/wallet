@@ -1,3 +1,4 @@
+// TODO: typescriptify
 import {
   ChamberWallet,
   PlasmaClient

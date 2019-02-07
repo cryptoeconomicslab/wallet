@@ -1,4 +1,4 @@
-
+// TODO: typescriptify
 export class JsonRpcClient {
 
   constructor(endpoint) {

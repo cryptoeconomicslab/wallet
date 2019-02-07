@@ -1,3 +1,4 @@
+// TODO: typescriptify
 import { resolve } from 'path';
 
 export class WalletStorage {
