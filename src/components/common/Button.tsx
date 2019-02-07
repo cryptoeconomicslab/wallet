@@ -8,12 +8,15 @@ export default (props: React.HTMLProps<HTMLButtonElement>) => {
     <button {...props}>
       {children}
       <style jsx>{`
-        color: ${colors.TEXT_MAIN};
-        border: solid 2px ${colors.BORDER_COLOR_LIGHT};
-        background: transparent;
-        font-size: ${FONT_SIZE.MEDIUM};
-        padding: ${PADDING.MEDIUM};
-        border-radius: ${RADIUS.NORMAL};
+        button {
+          align-items: center;
+          color: ${colors.TEXT_MAIN};
+          border: solid 2px ${colors.BORDER_COLOR_LIGHT};
+          background: transparent;
+          font-size: ${FONT_SIZE.MEDIUM};
+          padding: ${PADDING.MEDIUM};
+          border-radius: ${RADIUS.NORMAL};
+        }
       `}</style>
     </button>
   )

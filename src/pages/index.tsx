@@ -11,8 +11,9 @@ import {
   deposit,
   State as DepositState
 } from '../redux/modules/chamberWallet/deposit'
-import Card from '../components/wallet/Card'
+import WalletCard from '../components/wallet/WalletCard'
 import { ThunkDispatch } from 'redux-thunk'
+import { FONT_SIZE } from '../constants/size'
 
 interface StateProps {
   wallet: WalletState
@@ -51,11 +52,21 @@ class App extends React.Component<StateProps & DispatchProps> {
     const balance = ref.getBalance()
 
     return (
-      <Card
-        balance={balance}
-        handleDeposit={() => deposit(1)}
-        depositStatus={depositState.status}
-      />
+      <div>
+        <h1 className="title">My Wallet</h1>
+        <WalletCard
+          walletName="Chamber Wallet"
+          balance={balance}
+          handleDeposit={() => deposit(1)}
+          depositStatus={depositState.status}
+        />
+        <style jsx>{`
+          .title {
+            font-size: ${FONT_SIZE.LARGE};
+            padding: 1.2rem;
+          }
+        `}</style>
+      </div>
     )
   }
 }
