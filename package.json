@@ -1,13 +1,16 @@
 {
-  "name": "next-ts",
-  "version": "0.0.0",
-  "description": "",
+  "name": "wallet",
+  "version": "0.0.1",
+  "description": "plasma chamber wallet implementation for mobile web",
   "scripts": {
     "start": "next src -p 8080",
     "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },
-  "author": "tkmct<1220t.takamichi@gmail.com>",
+  "author": {
+    "name": "Cryptoeconomics Lab",
+    "url": "https://www.cryptoeconomicslab.com/"
+  },
   "license": "MIT",
   "dependencies": {
     "@layer2/wallet": "0.0.12",
