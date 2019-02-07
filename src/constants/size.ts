@@ -8,7 +8,7 @@ const FONT_SIZE = {
   LARGE: '2.4rem',
   SEMI_LARGE: '2rem',
   MEDIUM: '1.6rem',
-  TINY: '1.2rem'
+  TINY: '1rem'
 }
 
 const MARGIN = {
@@ -28,4 +28,9 @@ const RADIUS = {
   LARGE: '10px'
 }
 
-export { FONT_SIZE, MARGIN, PADDING, RADIUS }
+const BORDER = {
+  THIN: '1px',
+  THICK: '2px'
+}
+
+export { FONT_SIZE, MARGIN, PADDING, RADIUS, BORDER }

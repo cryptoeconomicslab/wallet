@@ -13,9 +13,10 @@ import {
   State as WalletState,
   loadWallet
 } from '../../redux/modules/chamberWallet/wallet'
+import UTXOList from './UTXOList'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
-import { FONT_SIZE, PADDING } from '../../constants/size'
+import { FONT_SIZE, PADDING, BORDER } from '../../constants/size'
 import colors from '../../constants/colors'
 
 interface Props {
@@ -58,6 +59,7 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
     const { ref } = wallet
     const balance = ref.getBalance()
     const depositStatus = this.props.depositState.status
+    const utxos = ref.getUTXOArray()
 
     return (
       <main className="container">
@@ -73,7 +75,7 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
             </span>
           </div>
         </section>
-        <section>{/* UTXO List section */}</section>
+        <UTXOList utxos={utxos} />
         <section className="control-section">
           {/* Control section */}
           <div className="deposit-control">
@@ -107,7 +109,7 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
           }
 
           .title-section {
-            border-bottom: solid 1px ${colors.BORDER_COLOR_LIGHT};
+            border-bottom: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
             padding-bottom: ${PADDING.TINY};
           }
 

@@ -6,7 +6,7 @@ export default class App extends React.Component {
   public render() {
     return (
       <div>
-        <h1 className="title">My Wallet</h1>
+        <h1 className="title">Wallets</h1>
         <WalletCard walletName="Chamber Wallet" />
         <style jsx>{`
           .title {
