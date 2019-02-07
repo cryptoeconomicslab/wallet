@@ -54,7 +54,7 @@ export default class UTXOList extends React.Component<Props> {
         </div>
         <style jsx>{`
           .container {
-            padding: ${PADDING.MEDIUM} 0;
+            padding-top: ${PADDING.MEDIUM};
             border-top: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
           }
 

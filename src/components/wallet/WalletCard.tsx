@@ -75,22 +75,26 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
             </span>
           </div>
         </section>
+        {/* UTXOList section */}
         <UTXOList utxos={utxos} />
         <section className="control-section">
           {/* Control section */}
+          <h3 className="control-title">DEPOSIT</h3>
           <div className="deposit-control">
-            <Button
-              disabled={depositStatus === DEPOSIT_STATUS.LOADING}
-              onClick={() => this.handleDeposit(1)}
-            >
-              Deposit 1eth
-            </Button>
-            {depositStatus === DEPOSIT_STATUS.LOADING && (
-              <>
-                <MarginHorizontal />
-                <LoadingSpinner size="medium" />
-              </>
-            )}
+            <div className="controls">
+              <Button
+                disabled={depositStatus === DEPOSIT_STATUS.LOADING}
+                onClick={() => this.handleDeposit(1)}
+              >
+                Deposit 1eth
+              </Button>
+              {depositStatus === DEPOSIT_STATUS.LOADING && (
+                <>
+                  <MarginHorizontal />
+                  <LoadingSpinner size="medium" />
+                </>
+              )}
+            </div>
           </div>
         </section>
         <style jsx>{`
@@ -134,9 +138,18 @@ class WalletCard extends React.Component<Props & StateProps & DispatchProps> {
             font-size: ${FONT_SIZE.VERY_LARGE};
           }
 
+          .control-section {
+            padding-top: ${PADDING.MEDIUM};
+            border-top: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
+          }
+
           .deposit-control {
             display: flex;
             align-items: center;
+          }
+
+          .deposit-title {
+            font-size: ${FONT_SIZE.MEDIUM};
           }
         `}</style>
       </main>
