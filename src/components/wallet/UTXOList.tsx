@@ -6,6 +6,7 @@ import { Button } from '../common'
 
 interface Props {
   utxos: SignedTransactionWithProof[]
+  handleExit: (tx: SignedTransactionWithProof) => void
 }
 
 export default class UTXOList extends React.Component<Props> {
@@ -18,7 +19,9 @@ export default class UTXOList extends React.Component<Props> {
           {segment.start.toNumber().toLocaleString()} →{' '}
           {segment.end.toNumber().toLocaleString()}
         </div>
-        <Button customSize="small">EXIT</Button>
+        <Button customSize="small" onClick={() => this.props.handleExit(utxo)}>
+          EXIT
+        </Button>
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;
