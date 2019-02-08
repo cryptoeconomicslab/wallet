@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@layer2/wallet": "0.0.12",
+    "@layer2/wallet": "0.0.13",
     "@zeit/next-typescript": "^1.1.1",
     "ethers": "^4.0.23",
     "next": "^7.0.2",
