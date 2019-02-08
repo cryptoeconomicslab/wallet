@@ -93,6 +93,10 @@ export const loadWallet = () => {
     dispatch(loadWalletStart())
 
     const wallet = WalletFactory.createWallet()
+    // set up polling for root chain contract
+    await wallet.init()
+    // load plasma blocks from child chain
+    await wallet.updateBlocks()
     dispatch(loadWalletSuccess(wallet))
   }
 }
