@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux'
+import { AppState } from '../index'
+
 // CONSTANTS
 export enum TRANSFER_STATUS {
   INITIAL = 'INITIAL',
@@ -52,14 +55,14 @@ export const reset = () => ({
 // Reducer
 export interface State {
   status: TRANSFER_STATUS
-  to: string | null // Address to transfer
+  to: string // Address to transfer
   amount: number // amount to transfer
   error: Error | null
 }
 
 const initialState: State = {
   status: TRANSFER_STATUS.INITIAL,
-  to: null,
+  to: '',
   amount: 0,
   error: null
 }
@@ -116,3 +119,21 @@ const reducer = (
 export default reducer
 
 // thunks
+export const send = () => async (
+  dispatch: Dispatch,
+  getState: () => AppState
+) => {
+  dispatch(transferStart())
+  const state = getState()
+  const ref = state.chamberWallet.wallet.ref
+  const { to, amount } = state.chamberWallet.transfer
+  // TODO: validation
+  // TODO: handle error on return value
+  try {
+    await ref.transfer(to, amount.toString())
+  } catch (e) {
+    dispatch(transferFail(e))
+    return
+  }
+  dispatch(transferSuccess())
+}

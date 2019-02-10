@@ -11,6 +11,12 @@ const FONT_SIZE = {
   TINY: '1rem'
 }
 
+const FONT_WEIGHT = {
+  BOLD: '600',
+  NORMAL: '400',
+  THIN: '200'
+}
+
 const MARGIN = {
   TINY: '0.4rem',
   MEDIUM: '0.8rem',
@@ -33,4 +39,4 @@ const BORDER = {
   THICK: '2px'
 }
 
-export { FONT_SIZE, MARGIN, PADDING, RADIUS, BORDER }
+export { FONT_SIZE, FONT_WEIGHT, MARGIN, PADDING, RADIUS, BORDER }
