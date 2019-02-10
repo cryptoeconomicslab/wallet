@@ -125,7 +125,7 @@ class WalletCard extends React.Component<
         <style jsx>{`
           .container {
             width: calc(100% - 2.4rem);
-            height: 80vh;
+            height: 90vh;
             padding: 1.2rem;
             border-radius: 8px;
             background: linear-gradient(
