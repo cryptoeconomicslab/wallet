@@ -14,6 +14,7 @@ import {
   loadWallet
 } from '../../redux/modules/chamberWallet/wallet'
 import UTXOList from './UTXOList'
+import TransferSection from './TransferSection'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
 import { FONT_SIZE, PADDING, BORDER, MARGIN } from '../../constants/size'
@@ -120,6 +121,7 @@ class WalletCard extends React.Component<
             </div>
           </div>
         </section>
+        <TransferSection />
         <style jsx>{`
           .container {
             width: calc(100% - 2.4rem);
