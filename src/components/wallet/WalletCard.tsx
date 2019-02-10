@@ -205,6 +205,12 @@ class WalletCard extends React.Component<
   }
 
   private handleExit = (tx: SignedTransactionWithProof) => {
+    console.info(tx.blkNum.mul(100))
+    console.info(tx.getOutput().getSegment(0).start)
+    console.info(tx.getOutput().getSegment(0).end)
+    console.info(tx.getTxBytes())
+    console.info(tx.getProofAsHex())
+    console.info(tx.getSignatures())
     this.props.wallet.ref.exit(tx)
   }
 }
