@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch, bindActionCreators } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
+import { SignedTransactionWithProof } from '@layer2/core'
 import { AppState } from '../../redux/modules'
 import {
   DEPOSIT_STATUS,
@@ -89,7 +90,7 @@ class WalletCard extends React.Component<
           </div>
         </section>
         {/* UTXOList section */}
-        <UTXOList utxos={utxos} />
+        <UTXOList handleExit={this.handleExit} utxos={utxos} />
         <section className="control-section">
           {/* Control section */}
           <h3 className="control-title">DEPOSIT</h3>
@@ -203,6 +204,16 @@ class WalletCard extends React.Component<
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     this.setState({ depositAmount: Number(e.target.value) })
+  }
+
+  private handleExit = (tx: SignedTransactionWithProof) => {
+    console.info(tx.blkNum.mul(100))
+    console.info(tx.getOutput().getSegment(0).start)
+    console.info(tx.getOutput().getSegment(0).end)
+    console.info(tx.getTxBytes())
+    console.info(tx.getProofAsHex())
+    console.info(tx.getSignatures())
+    this.props.wallet.ref.exit(tx)
   }
 }
 
