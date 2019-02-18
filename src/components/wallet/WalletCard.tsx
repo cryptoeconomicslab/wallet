@@ -78,6 +78,7 @@ class WalletCard extends React.Component<
       <main className="container">
         <section className="title-section">
           <h2 className="wallet-title">{walletName}</h2>
+          <p className="address">{ref.getAddress()}</p>
         </section>
         <section className="balance-section">
           {/* Balance section */}
@@ -135,6 +136,7 @@ class WalletCard extends React.Component<
             );
             color: ${colors.TEXT_MAIN};
             margin: auto;
+            overflow-y: scroll;
           }
 
           .title-section {
@@ -145,6 +147,10 @@ class WalletCard extends React.Component<
           .wallet-title {
             font-size: ${FONT_SIZE.SEMI_LARGE};
             text-transform: uppercase;
+          }
+
+          .address {
+            word-break: break-word;
           }
 
           .balance-section {
