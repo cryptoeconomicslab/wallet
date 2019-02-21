@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Dispatch, bindActionCreators } from 'redux'
+import { Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import { AppState } from '../../redux/modules'
 import {
@@ -10,8 +10,7 @@ import {
 } from '../../redux/modules/chamberWallet/deposit'
 import {
   WALLET_STATUS,
-  State as WalletState,
-  loadWallet
+  State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
 import UTXOList from './UTXOList'
 import TransferSection from './TransferSection'
@@ -30,7 +29,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadWallet: () => void
   deposit: (ether: number) => void
 }
 
@@ -44,14 +42,6 @@ class WalletCard extends React.Component<
 > {
   public state = {
     depositAmount: 1
-  }
-
-  public componentDidMount() {
-    const { wallet, loadWallet } = this.props
-    const status = wallet.status
-    if (status === WALLET_STATUS.INITIAL || status === WALLET_STATUS.ERROR) {
-      loadWallet()
-    }
   }
 
   public render() {
@@ -218,7 +208,6 @@ export default connect(
     depositState: state.chamberWallet.deposit
   }),
   (dispatch: Dispatch): DispatchProps => ({
-    loadWallet: bindActionCreators(loadWallet, dispatch),
     deposit: (ether: number) => {
       ;(dispatch as ThunkDispatch<void, AppState, any>)(deposit(ether))
     }

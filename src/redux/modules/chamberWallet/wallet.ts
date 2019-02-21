@@ -92,6 +92,18 @@ export const loadWallet = () => {
   return async (dispatch: Dispatch) => {
     dispatch(loadWalletStart())
 
+    // Load wallet if in storage
+    const wallet = WalletFactory.createWallet()
+    if (wallet) {
+      dispatch(loadWalletSuccess(wallet))
+    } else {
+      dispatch(loadWalletFail(new Error('No wallet in localStorage'))) // todo: make custom error class
+    }
+  }
+}
+
+export const createWallet = () => {
+  return async (dispatch: Dispatch) => {
     const wallet = WalletFactory.createWallet()
     dispatch(loadWalletSuccess(wallet))
   }
