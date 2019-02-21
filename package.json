@@ -4,6 +4,7 @@
   "description": "plasma chamber wallet implementation for mobile web",
   "scripts": {
     "start": "next src -p 8080",
+    "start:prod": "NODE_ENV=develop1 next src -p 8081",
     "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },
@@ -13,14 +14,14 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@layer2/wallet": "0.0.14",
+    "@layer2/wallet": "0.0.20",
     "@zeit/next-typescript": "^1.1.1",
-    "ethers": "^4.0.25",
-    "next": "^7.0.3",
+    "ethers": "^4.0.26",
+    "next": "^8.0.1",
     "next-redux-wrapper": "^2.0.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-redux": "^6.0.0",
+    "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },

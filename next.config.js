@@ -7,7 +7,7 @@ module.exports = withTypescript({
 
     // need this line to avoid compilation error of ethers.js
     config.externals = [{ xmlhttprequest: 'XMLHttpRequest' }]
-    
+  
     return config
   }
 })

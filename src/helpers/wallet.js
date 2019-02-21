@@ -20,12 +20,12 @@ export default class WalletFactory {
     const client = new PlasmaClient(jsonRpcClient)
     const storage = new WalletStorage()
     const privateKey = storage.get('privateKey')
-    return new ChamberWallet(
+    return ChamberWallet.createWalletWithPrivateKey(
       client,
-      privateKey?privateKey: process.env.PRIVATE_KEY,
       process.env.ROOTCHAIN_ENDPOINT,
       process.env.ROOTCHAIN_ADDRESS,
-      storage
+      storage,
+      privateKey ? privateKey : process.env.PRIVATE_KEY,
     )
   }
 }
