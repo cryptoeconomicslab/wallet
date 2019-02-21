@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { MARGIN, FONT_SIZE, FONT_WEIGHT } from '../../constants/size'
+import colors from '../../constants/colors'
 
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -28,6 +29,7 @@ const InputControl = ({ onChange, value, label }: Props) => {
           display: block;
           width: 100%;
           margin: auto;
+          border: solid 1px ${colors.BORDER_COLOR_INVERSE};
         }
       `}</style>
     </div>

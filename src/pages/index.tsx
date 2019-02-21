@@ -1,5 +1,6 @@
 import * as React from 'react'
 import WalletCard from '../components/wallet/WalletCard'
+import CreateWalletSection from '../components/wallet/CreateWalletSection'
 import { FONT_SIZE } from '../constants/size'
 import { connect } from 'react-redux'
 import { AppState } from '../redux/modules'
@@ -27,21 +28,20 @@ class App extends React.Component<StateProps & DispatchProps> {
 
   public render() {
     const { wallet } = this.props
-    console.log(wallet.status)
 
     return (
       <div>
         <h1 className="title">Wallets</h1>
-        {wallet.status === WALLET_STATUS.INITIAL ||
+        {/* wallet status condition */
+        wallet.status === WALLET_STATUS.INITIAL ||
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
           <WalletCard walletName="Chamber Wallet" />
+        ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
+          <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (
-          <div>
-            {/* TODO: if no wallet is ever created, display create wallet section */}
-            {wallet.error.message}
-          </div>
+          <div>{wallet.error.message}</div>
         ) : null}
         <style jsx>{`
           .title {
