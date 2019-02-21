@@ -123,9 +123,6 @@ export const createWallet = (privateKey: string) => {
 
     try {
       const wallet = WalletFactory.createWallet({ privateKey })
-
-        // debug purpose
-      ;(window as any).wallet = wallet
       dispatch(loadWalletSuccess(wallet))
     } catch (e) {
       dispatch(loadWalletFail(e)) // TODO: make custom error ErrorCreateWallet

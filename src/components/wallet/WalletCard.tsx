@@ -44,6 +44,15 @@ class WalletCard extends React.Component<
     depositAmount: 1
   }
 
+  public async componentDidMount() {
+    const { ref } = this.props.wallet
+
+    ref.init(async () => {
+      await ref.syncChildChain()
+      this.forceUpdate()
+    })
+  }
+
   public render() {
     const { walletName, wallet } = this.props
     if (wallet.status === WALLET_STATUS.INITIAL) {
