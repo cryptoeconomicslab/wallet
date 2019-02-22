@@ -18,13 +18,15 @@ export default class WalletFactory {
     const client = new PlasmaClient(jsonRpcClient)
     const storage: IWalletStorage = new WalletStorage() as any
     try {
-      return ChamberWallet.createWalletWithPrivateKey(
+      const wallet = ChamberWallet.createWalletWithPrivateKey(
         client,
         process.env.ROOTCHAIN_ENDPOINT,
         process.env.ROOTCHAIN_ADDRESS,
         storage,
         privateKey
       )
+      ;(window as any).wallet = wallet
+      return wallet
     } catch (e) {
       throw e
     }

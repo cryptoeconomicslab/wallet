@@ -3,14 +3,17 @@ import { SignedTransactionWithProof } from '@layer2/core'
 import { FONT_SIZE, PADDING, BORDER } from '../../constants/size'
 import colors from '../../constants/colors'
 import { Button } from '../common'
+import { ChamberWallet } from '@layer2/wallet'
 
 interface Props {
   utxos: SignedTransactionWithProof[]
+  wallet: ChamberWallet
 }
 
 export default class UTXOList extends React.Component<Props> {
   public renderListItem = (utxo: SignedTransactionWithProof) => {
     const segment = utxo.getOutput().getSegment(0)
+    const wallet = this.props.wallet
 
     return (
       <div className="item" key={utxo.getTxHash()}>
@@ -18,7 +21,17 @@ export default class UTXOList extends React.Component<Props> {
           {segment.start.toNumber().toLocaleString()} →{' '}
           {segment.end.toNumber().toLocaleString()}
         </div>
-        <Button customSize="small">EXIT</Button>
+        <Button
+          customSize="small"
+          onClick={() => {
+            wallet
+              .exit(utxo)
+              .then(console.log)
+              .catch(console.error)
+          }}
+        >
+          EXIT
+        </Button>
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;

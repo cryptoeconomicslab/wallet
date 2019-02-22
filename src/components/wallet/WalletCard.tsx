@@ -89,7 +89,7 @@ class WalletCard extends React.Component<
           </div>
         </section>
         {/* UTXOList section */}
-        <UTXOList utxos={utxos} />
+        <UTXOList utxos={utxos} wallet={ref} />
         <section className="control-section">
           {/* Control section */}
           <h3 className="control-title">DEPOSIT</h3>
