@@ -26,6 +26,8 @@ export default class WalletFactory {
         privateKey
       )
       ;(window as any).wallet = wallet
+      // TODO: how to save privateKey?
+      storage.add('privateKey', privateKey)
       return wallet
     } catch (e) {
       throw e
@@ -33,7 +35,13 @@ export default class WalletFactory {
   }
 
   public static loadWallet(): ChamberWallet | null {
-    // TODO: implement
+    const storage = new WalletStorage()
+    const privateKey = storage.get('privateKey')
+    if (privateKey) {
+      const wallet = WalletFactory.createWallet({ privateKey })
+      return wallet
+    }
+
     return null
   }
 }
