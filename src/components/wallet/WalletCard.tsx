@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Dispatch, bindActionCreators } from 'redux'
+import { Dispatch } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import { AppState } from '../../redux/modules'
 import {
@@ -10,10 +10,10 @@ import {
 } from '../../redux/modules/chamberWallet/deposit'
 import {
   WALLET_STATUS,
-  State as WalletState,
-  loadWallet
+  State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
 import UTXOList from './UTXOList'
+import TransferSection from './TransferSection'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
 import { FONT_SIZE, PADDING, BORDER, MARGIN } from '../../constants/size'
@@ -29,7 +29,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadWallet: () => void
   deposit: (ether: number) => void
 }
 
@@ -45,12 +44,13 @@ class WalletCard extends React.Component<
     depositAmount: 1
   }
 
-  public componentDidMount() {
-    const { wallet, loadWallet } = this.props
-    const status = wallet.status
-    if (status === WALLET_STATUS.INITIAL || status === WALLET_STATUS.ERROR) {
-      loadWallet()
-    }
+  public async componentDidMount() {
+    const { ref } = this.props.wallet
+
+    ref.init(async () => {
+      await ref.syncChildChain()
+      this.forceUpdate()
+    })
   }
 
   public render() {
@@ -77,6 +77,7 @@ class WalletCard extends React.Component<
       <main className="container">
         <section className="title-section">
           <h2 className="wallet-title">{walletName}</h2>
+          <p className="address">{ref.getAddress()}</p>
         </section>
         <section className="balance-section">
           {/* Balance section */}
@@ -88,7 +89,7 @@ class WalletCard extends React.Component<
           </div>
         </section>
         {/* UTXOList section */}
-        <UTXOList utxos={utxos} />
+        <UTXOList utxos={utxos} wallet={ref} />
         <section className="control-section">
           {/* Control section */}
           <h3 className="control-title">DEPOSIT</h3>
@@ -120,10 +121,11 @@ class WalletCard extends React.Component<
             </div>
           </div>
         </section>
+        <TransferSection />
         <style jsx>{`
           .container {
             width: calc(100% - 2.4rem);
-            height: 80vh;
+            height: 90vh;
             padding: 1.2rem;
             border-radius: 8px;
             background: linear-gradient(
@@ -133,6 +135,7 @@ class WalletCard extends React.Component<
             );
             color: ${colors.TEXT_MAIN};
             margin: auto;
+            overflow-y: scroll;
           }
 
           .title-section {
@@ -143,6 +146,10 @@ class WalletCard extends React.Component<
           .wallet-title {
             font-size: ${FONT_SIZE.SEMI_LARGE};
             text-transform: uppercase;
+          }
+
+          .address {
+            word-break: break-word;
           }
 
           .balance-section {
@@ -210,7 +217,6 @@ export default connect(
     depositState: state.chamberWallet.deposit
   }),
   (dispatch: Dispatch): DispatchProps => ({
-    loadWallet: bindActionCreators(loadWallet, dispatch),
     deposit: (ether: number) => {
       ;(dispatch as ThunkDispatch<void, AppState, any>)(deposit(ether))
     }

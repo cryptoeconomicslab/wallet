@@ -31,6 +31,14 @@ export default class MyDocument extends Document {
               font-size: 1.6rem;
               line-height: 1.6;
             }
+
+            input {
+              font-family: inherit;
+              padding: 8px;
+              border: none;
+              border-radius: 4px;
+              font-size: 1.6rem;
+            }
           `}</style>
         </Head>
         <body>

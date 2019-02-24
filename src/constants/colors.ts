@@ -11,11 +11,12 @@ const BG_INVERSE = '#FFFFFF'
 
 const TEXT_MAIN = '#FFFFFF'
 const TEXT_PRIMARY = '#F3736A'
-const TEXT_DISABLED = '#dddddd' // TODO: change color
+const TEXT_DISABLED = '#DDDDDD' // TODO: change color
 
 const BORDER_COLOR_LIGHT = '#FFFFFF'
-const BORDER_COLOR_DISABLED = '#dddddd' // TODO: change color
+const BORDER_COLOR_DISABLED = '#DDDDDD' // TODO: change color
 const BORDER_COLOR_VERY_LIGHT = 'rgba(255,255,255,0.6)'
+const BORDER_COLOR_INVERSE = '#CCCCCC'
 
 export default {
   BG_MAIN,
@@ -27,5 +28,6 @@ export default {
   TEXT_DISABLED,
   BORDER_COLOR_LIGHT,
   BORDER_COLOR_DISABLED,
-  BORDER_COLOR_VERY_LIGHT
+  BORDER_COLOR_VERY_LIGHT,
+  BORDER_COLOR_INVERSE
 }
