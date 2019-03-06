@@ -5,6 +5,7 @@
   "scripts": {
     "start": "next src -p 8080",
     "start:prod": "NODE_ENV=develop1 next src -p 8081",
+    "export": "next export src && mv src/out ./dist",
     "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },

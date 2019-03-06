@@ -9,5 +9,11 @@ module.exports = withTypescript({
     config.externals = [{ xmlhttprequest: 'XMLHttpRequest' }]
   
     return config
-  }
+  },
+  exportPathMap() {
+    return {
+      '/': { page: '/' }
+    }
+  }  
 })
+
