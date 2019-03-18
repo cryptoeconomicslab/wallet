@@ -21,8 +21,9 @@ export enum TRANSFER_ACTION_TYPES {
 }
 
 // Action creators
-export const transferStart = () => ({
-  type: TRANSFER_ACTION_TYPES.TRANSFER_START
+export const transferStart = ({ to, amount }) => ({
+  type: TRANSFER_ACTION_TYPES.TRANSFER_START,
+  payload: { to, amount }
 })
 
 export const transferSuccess = () => ({
@@ -123,10 +124,10 @@ export const send = () => async (
   dispatch: Dispatch,
   getState: () => AppState
 ) => {
-  dispatch(transferStart())
   const state = getState()
-  const ref = state.chamberWallet.wallet.ref
   const { to, amount } = state.chamberWallet.transfer
+  dispatch(transferStart({ to, amount }))
+  const ref = state.chamberWallet.wallet.ref
   // TODO: validation
   // TODO: handle error on return value
   try {
