@@ -20,8 +20,9 @@ export enum DEPOSIT_ACTION_TYPES {
 }
 
 // Action creators
-export const depositStart = () => ({
-  type: DEPOSIT_ACTION_TYPES.DEPOSIT_START
+export const depositStart = (amount: number) => ({
+  type: DEPOSIT_ACTION_TYPES.DEPOSIT_START,
+  payload: amount
 })
 
 export const depositSuccess = () => ({
@@ -91,7 +92,7 @@ export const deposit = (
   dispatch: Dispatch,
   getState /** TODO: add util Type for getState */
 ) => {
-  dispatch(depositStart())
+  dispatch(depositStart(ether))
   const state = getState()
   const ref: ChamberWallet = state.chamberWallet.wallet.ref
 

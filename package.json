@@ -14,13 +14,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@layer2/wallet": "0.0.29",
+    "@layer2/wallet": "0.0.32",
     "@zeit/next-typescript": "^1.1.1",
-    "ethers": "^4.0.26",
+    "ethers": "^4.0.27",
     "next": "^8.0.3",
-    "next-redux-wrapper": "^2.0.0",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
+    "next-redux-wrapper": "^3.0.0-alpha.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
@@ -28,12 +28,12 @@
   "devDependencies": {
     "@types/next": "^8.0.1",
     "@types/next-redux-wrapper": "^2.0.2",
-    "@types/react-redux": "^7.0.1",
+    "@types/react-redux": "^7.0.3",
     "@types/styled-jsx": "^2.2.8",
     "dotenv-webpack": "^1.7.0",
     "prettier": "^1.16.4",
     "redux-logger": "^3.0.6",
-    "tslint": "^5.13.1",
+    "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.3.3333"
