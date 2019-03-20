@@ -4,8 +4,8 @@ import { AppState } from '../index'
 // CONSTANTS
 export enum TRANSFER_STATUS {
   INITIAL = 'INITIAL',
-  LOADING = 'LOADING',
-  LOADED = 'LOADED',
+  SENDING = 'SENDING',
+  SUCCESS = 'SUCCESS',
   ERROR = 'ERROR'
 }
 
@@ -81,12 +81,12 @@ const reducer = (
     case TRANSFER_ACTION_TYPES.TRANSFER_START:
       return {
         ...state,
-        status: TRANSFER_STATUS.LOADING
+        status: TRANSFER_STATUS.SENDING
       }
     case TRANSFER_ACTION_TYPES.TRANSFER_SUCCESS:
       return {
         ...state,
-        status: TRANSFER_STATUS.LOADED
+        status: TRANSFER_STATUS.SUCCESS
       }
     case TRANSFER_ACTION_TYPES.TRANSFER_FAIL:
       return {
