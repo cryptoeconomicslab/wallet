@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Wallet from '../components/wallet/Wallet'
+import Deposit from '../components/deposit/Deposit'
 import CreateWalletSection from '../components/wallet/CreateWalletSection'
 import { connect } from 'react-redux'
 import { AppState } from '../redux/modules'
@@ -8,6 +8,7 @@ import {
   WALLET_STATUS,
   loadWallet
 } from '../redux/modules/chamberWallet/wallet'
+import Heading from '../components/Heading'
 
 interface StateProps {
   wallet: WalletState
@@ -17,7 +18,7 @@ interface DispatchProps {
   loadWallet: () => void
 }
 
-class App extends React.Component<StateProps & DispatchProps> {
+class DepositPage extends React.Component<StateProps & DispatchProps> {
   public componentDidMount() {
     const { wallet, loadWallet } = this.props
     if (wallet.status === WALLET_STATUS.INITIAL) {
@@ -27,7 +28,6 @@ class App extends React.Component<StateProps & DispatchProps> {
 
   public render() {
     const { wallet } = this.props
-
     return (
       <div>
         {/* wallet status condition */
@@ -35,7 +35,10 @@ class App extends React.Component<StateProps & DispatchProps> {
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
-          <Wallet />
+          <>
+            <Heading balance={wallet.ref.getBalance()} />
+            <Deposit />
+          </>
         ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
           <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (
@@ -51,4 +54,4 @@ export default connect(
     wallet: state.chamberWallet.wallet
   }),
   { loadWallet }
-)(App)
+)(DepositPage)

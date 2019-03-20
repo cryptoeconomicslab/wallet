@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Transfer from '../components/transfer/Transfer'
 import CreateWalletSection from '../components/wallet/CreateWalletSection'
-import { FONT_SIZE } from '../constants/size'
 import { connect } from 'react-redux'
 import { AppState } from '../redux/modules'
 import {
@@ -13,6 +12,7 @@ import {
   changeAccountTransferTo,
   changeTransferAmount
 } from '../redux/modules/chamberWallet/transfer'
+import Heading from '../components/Heading'
 
 interface StateProps {
   wallet: WalletState
@@ -48,18 +48,15 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
-          <Transfer />
+          <>
+            <Heading balance={wallet.ref.getBalance()} />
+            <Transfer />
+          </>
         ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
           <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (
           <div>{wallet.error.message}</div>
         ) : null}
-        <style jsx>{`
-          .title {
-            font-size: ${FONT_SIZE.LARGE};
-            padding: 1.2rem;
-          }
-        `}</style>
       </div>
     )
   }
