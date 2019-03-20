@@ -81,8 +81,6 @@ class WalletCard extends React.Component<StateProps> {
             background-color: ${colors.BG_WHITE};
             box-shadow: ${BOX_SHADOW.VERTICAL_NORMAL};
             padding: 0 ${PADDING.VERY_LARGE} ${PADDING.LARGE};
-            height: 24rem;
-            transition: height 0.4s linear;
           }
 
           .address-section {

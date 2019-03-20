@@ -26,7 +26,7 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
   public static getInitialProps({ query, isServer, store }) {
     if (isServer) {
       store.dispatch(changeTransferAmount(Number(query.amount) || 0))
-      store.dispatch(changeAccountTransferTo(query.address))
+      store.dispatch(changeAccountTransferTo(query.address || ''))
     }
     return query
   }

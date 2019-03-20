@@ -6,11 +6,13 @@ import {
   State as TransferState,
   changeTransferAmount,
   changeAccountTransferTo,
-  send
+  send,
+  TRANSFER_STATUS
 } from '../../redux/modules/chamberWallet/transfer'
 import { FONT_SIZE, MARGIN } from '../../constants/size'
 import { InputControl, Button } from '../common'
 import { PullRight } from '../utility'
+import colors from '../../constants/colors'
 
 interface StateProps {
   transferState: TransferState
@@ -25,6 +27,7 @@ interface DispatchProps {
 class TransferSection extends React.Component<StateProps & DispatchProps> {
   public render() {
     const { to, amount } = this.props.transferState
+    const { transferState } = this.props
 
     return (
       <div className="container">
@@ -42,8 +45,21 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
               value={amount}
             />
             <PullRight>
-              <Button onClick={this.onClickSend}>SEND</Button>
+              <Button
+                disabled={transferState.status === TRANSFER_STATUS.SENDING}
+                onClick={this.onClickSend}
+              >
+                SEND
+              </Button>
             </PullRight>
+            {transferState.status === TRANSFER_STATUS.SUCCESS ? (
+              <span className="message success">Transfer succeeded!!</span>
+            ) : transferState.status === TRANSFER_STATUS.ERROR ? (
+              <span className="message error">
+                {transferState.error.message}
+              </span>
+            ) : null}
+            <div />
           </div>
         </section>
         <style jsx>{`
@@ -54,6 +70,17 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
           .title {
             font-size: ${FONT_SIZE.MEDIUM};
             text-transform: uppercase;
+          }
+
+          .message {
+          }
+
+          .message.success {
+            color: ${colors.TEXT_SUCCESS};
+          }
+
+          .message.error {
+            color: ${colors.TEXT_ERROR};
           }
         `}</style>
       </div>

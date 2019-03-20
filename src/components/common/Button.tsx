@@ -43,7 +43,7 @@ function filterGenericProps(props: any) {
 }
 
 export default (props: React.HTMLProps<HTMLButtonElement> & Props) => {
-  const { children, customSize } = props
+  const { children, customSize, disabled } = props
   const domProps = filterGenericProps(props)
   const sizeStyle = getSizeStyle(customSize)
 
@@ -58,6 +58,7 @@ export default (props: React.HTMLProps<HTMLButtonElement> & Props) => {
           background: ${colors.BG_WHITE};
           border-radius: ${RADIUS.NORMAL};
           ${sizeStyle}
+          ${disabled && `color: ${colors.TEXT_DISABLED};`}
         }
       `}</style>
     </button>
