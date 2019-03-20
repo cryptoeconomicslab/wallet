@@ -15,12 +15,15 @@ import {
 import UTXOList from './UTXOList'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
-import { FONT_SIZE, PADDING, BORDER, MARGIN } from '../../constants/size'
+import {
+  FONT_SIZE,
+  PADDING,
+  BORDER,
+  MARGIN,
+  BOX_SHADOW
+} from '../../constants/size'
 import colors from '../../constants/colors'
-
-interface Props {
-  walletName: string
-}
+import Link from 'next/link'
 
 interface StateProps {
   wallet: WalletState
@@ -35,10 +38,7 @@ interface State {
   depositAmount: number
 }
 
-class WalletCard extends React.Component<
-  Props & StateProps & DispatchProps,
-  State
-> {
+class WalletCard extends React.Component<StateProps & DispatchProps, State> {
   public state = {
     depositAmount: 1
   }
@@ -53,12 +53,11 @@ class WalletCard extends React.Component<
   }
 
   public render() {
-    const { walletName, wallet } = this.props
+    const { wallet } = this.props
     if (wallet.status === WALLET_STATUS.INITIAL) {
       return <div>Wallet is not loaded. Please import.</div>
     }
 
-    // Maybe no need this status
     if (wallet.status === WALLET_STATUS.LOADING) {
       return <div>Importing Wallet</div>
     }
@@ -73,82 +72,87 @@ class WalletCard extends React.Component<
     const utxos = ref.getUTXOArray()
 
     return (
-      <main className="container">
-        <section className="title-section">
-          <h2 className="wallet-title">{walletName}</h2>
-          <p className="address">{ref.getAddress()}</p>
-        </section>
-        <section className="balance-section">
-          {/* Balance section */}
-          <h3 className="balance-title">Balance</h3>
-          <div>
+      <main>
+        <section className="heading">
+          <div className="balance-section">
+            <h3 className="balance-title">Balance</h3>
             <span className="balance-value">
               {balance.toNumber().toLocaleString()}
             </span>
           </div>
-        </section>
-        {/* UTXOList section */}
-        <UTXOList utxos={utxos} wallet={ref} />
-        <section className="control-section">
-          {/* Control section */}
-          <h3 className="control-title">DEPOSIT</h3>
-          <div className="deposit-control">
-            <div>
-              <select
-                className="deposit-amount-select"
-                onChange={this.handleChangeDepositAmount}
-              >
-                <option value={1}>1 ETH</option>
-                <option value={2}>2 ETH</option>
-                <option value={5}>5 ETH</option>
-                <option value={10}>10 ETH</option>
-              </select>
-            </div>
-            <div className="controls">
-              <Button
-                disabled={depositStatus === DEPOSIT_STATUS.LOADING}
-                onClick={this.handleDeposit}
-              >
-                Deposit
-              </Button>
-              {depositStatus === DEPOSIT_STATUS.LOADING && (
-                <>
-                  <MarginHorizontal />
-                  <LoadingSpinner size="medium" />
-                </>
-              )}
-            </div>
+          <div className="address-section">
+            <h4>Address</h4>
+            <p className="address">{ref.getAddress()}</p>
           </div>
         </section>
+        <div className="body">
+          <section className="link-section">
+            <div className="link-card">
+              <Link prefetch href="/transfer">
+                <button className="link-button">Transfer</button>
+              </Link>
+            </div>
+            <div className="link-card">
+              <Link prefetch href="/" /* TODO: implement */>
+                <button className="link-button">Deposit</button>
+              </Link>
+            </div>
+          </section>
+          {/* UTXOList section */}
+          <UTXOList utxos={utxos} wallet={ref} />
+          <section className="control-section">
+            {/* Control section */}
+            <h3 className="control-title">DEPOSIT</h3>
+            <div className="deposit-control">
+              <div>
+                <select
+                  className="deposit-amount-select"
+                  onChange={this.handleChangeDepositAmount}
+                >
+                  <option value={1}>1 ETH</option>
+                  <option value={2}>2 ETH</option>
+                  <option value={5}>5 ETH</option>
+                  <option value={10}>10 ETH</option>
+                </select>
+              </div>
+              <div className="controls">
+                <Button
+                  disabled={depositStatus === DEPOSIT_STATUS.LOADING}
+                  onClick={this.handleDeposit}
+                >
+                  Deposit
+                </Button>
+                {depositStatus === DEPOSIT_STATUS.LOADING && (
+                  <>
+                    <MarginHorizontal />
+                    <LoadingSpinner size="medium" />
+                  </>
+                )}
+              </div>
+            </div>
+          </section>
+        </div>
         {/* TODO: place Transfer link */}
         <style jsx>{`
-          .container {
-            width: calc(100% - 2.4rem);
-            height: 90vh;
-            padding: 1.2rem;
-            border-radius: 8px;
-            background: linear-gradient(
-              to right bottom,
-              ${colors.BG_GRADIENT_FROM},
-              ${colors.BG_GRADIENT_TO}
-            );
+          .body {
+            margin: ${MARGIN.LARGE};
             color: ${colors.TEXT_MAIN};
-            margin: auto;
-            overflow-y: scroll;
           }
 
-          .title-section {
-            border-bottom: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
-            padding-bottom: ${PADDING.TINY};
+          .heading {
+            background-color: ${colors.BG_WHITE};
+            color: ${colors.TEXT_MAIN};
+            box-shadow: ${BOX_SHADOW.VERTICAL_NORMAL};
+            padding: 0 ${PADDING.VERY_LARGE} ${PADDING.LARGE};
           }
 
-          .wallet-title {
-            font-size: ${FONT_SIZE.SEMI_LARGE};
-            text-transform: uppercase;
+          .address-section {
+            margin-top: ${MARGIN.LARGE};
           }
 
           .address {
             word-break: break-word;
+            font-size: ${FONT_SIZE.TINY};
           }
 
           .balance-section {
@@ -159,12 +163,36 @@ class WalletCard extends React.Component<
           }
 
           .balance-title {
-            text-transform: uppercase;
             font-size: ${FONT_SIZE.SEMI_LARGE};
           }
 
           .balance-value {
             font-size: ${FONT_SIZE.VERY_LARGE};
+          }
+
+          .link-section {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 12vh;
+          }
+
+          .link-card {
+            background-color: ${colors.BG_WHITE};
+            width: 30vw;
+            height: 10vh;
+            box-shadow: ${BOX_SHADOW.NORMAL};
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          .link-button {
+            width: 100%;
+            height: 100%;
+            color: ${colors.TEXT_PRIMARY};
+            font-size: ${FONT_SIZE.MEDIUM};
+            text-transform: uppercase;
           }
 
           .control-section {

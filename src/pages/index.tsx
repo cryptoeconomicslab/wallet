@@ -1,5 +1,5 @@
 import * as React from 'react'
-import WalletCard from '../components/wallet/WalletCard'
+import Wallet from '../components/wallet/Wallet'
 import CreateWalletSection from '../components/wallet/CreateWalletSection'
 import { FONT_SIZE } from '../constants/size'
 import { connect } from 'react-redux'
@@ -31,13 +31,12 @@ class App extends React.Component<StateProps & DispatchProps> {
 
     return (
       <div>
-        <h1 className="title">Wallets</h1>
         {/* wallet status condition */
         wallet.status === WALLET_STATUS.INITIAL ||
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
-          <WalletCard walletName="Chamber Wallet" />
+          <Wallet />
         ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
           <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (

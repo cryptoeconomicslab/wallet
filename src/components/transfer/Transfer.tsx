@@ -2,14 +2,14 @@ import * as React from 'react'
 import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AppState } from '../../redux/modules'
+import Link from 'next/link'
 import {
   State as TransferState,
   changeTransferAmount,
   changeAccountTransferTo,
   send
 } from '../../redux/modules/chamberWallet/transfer'
-import { FONT_SIZE, MARGIN, BORDER, PADDING } from '../../constants/size'
-import colors from '../../constants/colors'
+import { FONT_SIZE, MARGIN } from '../../constants/size'
 import { InputControl, Button } from '../common'
 import { PullRight } from '../utility'
 
@@ -29,6 +29,9 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
 
     return (
       <section className="container">
+        <Link href="/">
+          <button className="back-button">←</button>
+        </Link>
         <h3 className="title">Transfer</h3>
         <div className="transfer-form">
           <InputControl
@@ -47,14 +50,17 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
         </div>
         <style jsx>{`
           .container {
-            margin-top: ${MARGIN.LARGE};
-            padding-top: ${PADDING.MEDIUM};
-            border-top: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
+            margin: ${MARGIN.LARGE};
           }
 
           .title {
             font-size: ${FONT_SIZE.MEDIUM};
             text-transform: uppercase;
+          }
+
+          .back-button {
+            font-size: 1.6rem;
+            font-weight: bold;
           }
         `}</style>
       </section>

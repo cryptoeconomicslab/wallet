@@ -1,5 +1,5 @@
 import * as React from 'react'
-import TransferCard from '../components/transfer/TransferCard'
+import Transfer from '../components/transfer/Transfer'
 import CreateWalletSection from '../components/wallet/CreateWalletSection'
 import { FONT_SIZE } from '../constants/size'
 import { connect } from 'react-redux'
@@ -22,7 +22,7 @@ interface DispatchProps {
   loadWallet: () => void
 }
 
-class Transfer extends React.Component<StateProps & DispatchProps> {
+class TransferPage extends React.Component<StateProps & DispatchProps> {
   public static getInitialProps({ query, isServer, store }) {
     if (isServer) {
       store.dispatch(changeTransferAmount(Number(query.amount) || 0))
@@ -43,13 +43,12 @@ class Transfer extends React.Component<StateProps & DispatchProps> {
 
     return (
       <div>
-        <h1 className="title">Wallets</h1>
         {/* wallet status condition */
         wallet.status === WALLET_STATUS.INITIAL ||
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
-          <TransferCard />
+          <Transfer />
         ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
           <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (
@@ -71,4 +70,4 @@ export default connect(
     wallet: state.chamberWallet.wallet
   }),
   { loadWallet }
-)(Transfer)
+)(TransferPage)

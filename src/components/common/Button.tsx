@@ -55,7 +55,7 @@ export default (props: React.HTMLProps<HTMLButtonElement> & Props) => {
           align-items: center;
           color: ${colors.TEXT_PRIMARY};
           border: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
-          background: ${colors.BG_INVERSE};
+          background: ${colors.BG_WHITE};
           border-radius: ${RADIUS.NORMAL};
           ${sizeStyle}
         }

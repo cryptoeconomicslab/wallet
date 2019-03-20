@@ -1,33 +1,23 @@
 /**
  * color files.
- * mainly, use dark background and light color for text.
- * for inverse use, use light background and dark text color.
+ * mainly, use white background and black text color.
+ * for stressing, use primary color for text.
  */
 
-const BG_GRADIENT_FROM = '#E85542'
-const BG_GRADIENT_TO = '#F3736A'
-const BG_MAIN = '#F3736A'
-const BG_INVERSE = '#FFFFFF'
+const BG_PRIMARY = '#2389DA'
+const BG_WHITE = '#FFFFFF'
 
-const TEXT_MAIN = '#FFFFFF'
-const TEXT_PRIMARY = '#F3736A'
-const TEXT_DISABLED = '#DDDDDD' // TODO: change color
+const TEXT_MAIN = '#555555'
+const TEXT_PRIMARY = '#2389DA'
+const TEXT_INVERSE = '#FFFFFF'
 
-const BORDER_COLOR_LIGHT = '#FFFFFF'
-const BORDER_COLOR_DISABLED = '#DDDDDD' // TODO: change color
-const BORDER_COLOR_VERY_LIGHT = 'rgba(255,255,255,0.6)'
-const BORDER_COLOR_INVERSE = '#CCCCCC'
+const BORDER_COLOR_LIGHT = '#DDDDDD'
 
 export default {
-  BG_MAIN,
-  BG_INVERSE,
-  BG_GRADIENT_TO,
-  BG_GRADIENT_FROM,
+  BG_PRIMARY,
+  BG_WHITE,
   TEXT_MAIN,
   TEXT_PRIMARY,
-  TEXT_DISABLED,
-  BORDER_COLOR_LIGHT,
-  BORDER_COLOR_DISABLED,
-  BORDER_COLOR_VERY_LIGHT,
-  BORDER_COLOR_INVERSE
+  TEXT_INVERSE,
+  BORDER_COLOR_LIGHT
 }

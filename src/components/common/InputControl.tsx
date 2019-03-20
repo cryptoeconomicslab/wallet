@@ -29,7 +29,7 @@ const InputControl = ({ onChange, value, label }: Props) => {
           display: block;
           width: 100%;
           margin: auto;
-          border: solid 1px ${colors.BORDER_COLOR_INVERSE};
+          border: solid 1px ${colors.BORDER_COLOR_LIGHT};
         }
       `}</style>
     </div>
