@@ -20,13 +20,15 @@ const FONT_WEIGHT = {
 const MARGIN = {
   TINY: '0.4rem',
   MEDIUM: '0.8rem',
-  LARGE: '1.2rem'
+  LARGE: '1.2rem',
+  VERY_LARGE: '2.4rem'
 }
 
 const PADDING = {
   TINY: '0.4rem',
   MEDIUM: '0.8rem',
-  LARGE: '1.2rem'
+  LARGE: '1.2rem',
+  VERY_LARGE: '2.4rem'
 }
 
 const RADIUS = {
@@ -39,4 +41,9 @@ const BORDER = {
   THICK: '2px'
 }
 
-export { FONT_SIZE, FONT_WEIGHT, MARGIN, PADDING, RADIUS, BORDER }
+const BOX_SHADOW = {
+  NORMAL: '2px 2px 8px #ccc',
+  VERTICAL_NORMAL: '0px 2px 8px #ccc'
+}
+
+export { FONT_SIZE, FONT_WEIGHT, MARGIN, PADDING, RADIUS, BORDER, BOX_SHADOW }

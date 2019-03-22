@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Wallet from '../components/wallet/Wallet'
+import Transfer from '../components/transfer/Transfer'
 import CreateWalletSection from '../components/wallet/CreateWalletSection'
 import { connect } from 'react-redux'
 import { AppState } from '../redux/modules'
@@ -8,6 +8,11 @@ import {
   WALLET_STATUS,
   loadWallet
 } from '../redux/modules/chamberWallet/wallet'
+import {
+  changeAccountTransferTo,
+  changeTransferAmount
+} from '../redux/modules/chamberWallet/transfer'
+import Heading from '../components/Heading'
 
 interface StateProps {
   wallet: WalletState
@@ -17,7 +22,15 @@ interface DispatchProps {
   loadWallet: () => void
 }
 
-class App extends React.Component<StateProps & DispatchProps> {
+class TransferPage extends React.Component<StateProps & DispatchProps> {
+  public static getInitialProps({ query, isServer, store }) {
+    if (isServer) {
+      store.dispatch(changeTransferAmount(Number(query.amount) || 0))
+      store.dispatch(changeAccountTransferTo(query.address || ''))
+    }
+    return query
+  }
+
   public componentDidMount() {
     const { wallet, loadWallet } = this.props
     if (wallet.status === WALLET_STATUS.INITIAL) {
@@ -35,7 +48,10 @@ class App extends React.Component<StateProps & DispatchProps> {
         wallet.status === WALLET_STATUS.LOADING ? (
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
-          <Wallet />
+          <>
+            <Heading balance={wallet.ref.getBalance()} />
+            <Transfer />
+          </>
         ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
           <CreateWalletSection />
         ) : wallet.status === WALLET_STATUS.ERROR ? (
@@ -51,4 +67,4 @@ export default connect(
     wallet: state.chamberWallet.wallet
   }),
   { loadWallet }
-)(App)
+)(TransferPage)

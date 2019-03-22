@@ -30,6 +30,7 @@ export default class MyDocument extends Document {
               font-weight: 400;
               font-size: 1.6rem;
               line-height: 1.6;
+              color: #555;
             }
 
             input {

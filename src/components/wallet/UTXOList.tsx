@@ -35,8 +35,7 @@ export default class UTXOList extends React.Component<Props> {
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;
-            border-bottom: solid ${BORDER.THIN}
-              ${colors.BORDER_COLOR_VERY_LIGHT};
+            border-bottom: solid ${BORDER.THIN} ${colors.BORDER_COLOR_LIGHT};
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -68,7 +67,6 @@ export default class UTXOList extends React.Component<Props> {
         <style jsx>{`
           .container {
             padding-top: ${PADDING.MEDIUM};
-            border-top: solid ${BORDER.THICK} ${colors.BORDER_COLOR_LIGHT};
           }
 
           .title-section {
