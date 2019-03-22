@@ -5,6 +5,7 @@
  */
 
 const BG_PRIMARY = '#2389DA'
+const BG_SECONDARY = '#FB9EA4'
 const BG_WHITE = '#FFFFFF'
 const BG_DISABLED = '#CCC'
 
@@ -20,6 +21,7 @@ const BORDER_COLOR_LIGHT = '#DDDDDD'
 
 export default {
   BG_PRIMARY,
+  BG_SECONDARY,
   BG_WHITE,
   BG_DISABLED,
   TEXT_MAIN,

@@ -6,10 +6,16 @@ import {
   State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
 import UTXOList from './UTXOList'
-import { FONT_SIZE, PADDING, MARGIN, BOX_SHADOW } from '../../constants/size'
+import {
+  FONT_SIZE,
+  PADDING,
+  MARGIN,
+  BOX_SHADOW,
+  RADIUS
+} from '../../constants/size'
 import colors from '../../constants/colors'
 import Link from 'next/link'
-import { TiArrowForward, TiArrowDownThick } from 'react-icons/ti'
+import { TiArrowForward, TiArrowDownThick, TiPlus } from 'react-icons/ti'
 
 interface StateProps {
   wallet: WalletState
@@ -48,9 +54,17 @@ class WalletCard extends React.Component<StateProps> {
         <section className="heading">
           <div className="balance-section">
             <h3 className="balance-title">Balance</h3>
-            <span className="balance-value">
-              {balance.toNumber().toLocaleString()}
-            </span>
+            <div className="balance-body">
+              <span className="balance-value">
+                {balance.toNumber().toLocaleString()}
+              </span>
+              <Link href="/deposit" prefetch>
+                <button className="deposit-link">
+                  <TiPlus />
+                  Deposit
+                </button>
+              </Link>
+            </div>
           </div>
           <div className="address-section">
             <h4>Address</h4>
@@ -110,8 +124,24 @@ class WalletCard extends React.Component<StateProps> {
             font-size: ${FONT_SIZE.SEMI_LARGE};
           }
 
+          .balance-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
           .balance-value {
             font-size: ${FONT_SIZE.VERY_LARGE};
+          }
+
+          .deposit-link {
+            padding: ${PADDING.MEDIUM};
+            background-color: ${colors.BG_PRIMARY};
+            color: ${colors.TEXT_INVERSE};
+            border-radius: ${RADIUS.NORMAL};
+            border: none;
+            display: flex;
+            align-items: center;
           }
 
           .link-section {
