@@ -1,4 +1,3 @@
-// TODO: typescriptify
 import { resolve } from 'path';
 
 export class WalletStorage {
@@ -15,9 +14,12 @@ export class WalletStorage {
     request.onupgradeneeded = (event) => {
       console.log('onupgradeneeded');
       const db = event.target.result;
+      const PlasmaBlockHeaderStore = db.createObjectStore('PlasmaBlockHeader', { keyPath: 'id' });
+      PlasmaBlockHeaderStore.createIndex('blkNum', 'blkNum', { unique: false });
       const proofStore = db.createObjectStore('proof', { keyPath: 'id' });
       proofStore.createIndex('utxoKey', 'utxoKey', { unique: false });
     }
+
   }
 
   add(key, item) {
@@ -60,47 +62,59 @@ export class WalletStorage {
         reject(event);
       };
       request.onsuccess = function(event) {
-        resolve(request.result);
+        try {
+          resolve(request.result.value);
+        } catch (e) {
+          reject(e)
+        }
       };
     });
   }
 
+  addBlockHeader(blkNum, value) {
+    const storeName = 'PlasmaBlockHeader';
+    this.db.transaction(storeName, 'readwrite')
+      .objectStore(storeName)
+      .add({
+        id: blkNum,
+        blkNum: blkNum,
+        value: value
+      });
+    return Promise.resolve(true)
+  }
 
-  lastTransactions(utxoKey) {
-    const storeName = 'proof';
-    const range = IDBKeyRange.upperBound(utxoKey, true);
+  getBlockHeader(blkNum) {
+    const storeName = 'PlasmaBlockHeader'
+    const request = this.db.transaction(storeName, 'readwrite')
+      .objectStore(storeName)
+      .get(blkNum);
     return new Promise((resolve, reject) => {
-      let proofs = [];
-      this.db.transaction(storeName, 'readonly')
-        .objectStore(storeName)
-        .index('id')
-        .openCursor(range).onsuccess = function(event) {
-          var cursor = event.target.result;
-          if (cursor) {
-            proofs.push(cursor.value);
-            cursor.continue();
-          } else {
-            resolve(proofs);
-          }
-        };
+      request.onerror = function(event) {
+        reject(event);
+      };
+      request.onsuccess = function(event) {
+        resolve(request.result.value);
+      };
     });
   }
 
-  searchProof(utxoKey) {
-    const storeName = 'proof';
-    const range = IDBKeyRange.only(utxoKey);
+  searchBlockHeader(fromBlkNum, toBlkNum) {
+    const storeName = 'PlasmaBlockHeader';
+    const range = IDBKeyRange.bound(fromBlkNum, toBlkNum);
     return new Promise((resolve, reject) => {
       let proofs = [];
       this.db.transaction(storeName, 'readonly')
         .objectStore(storeName)
-        .index('utxoKey')
+        .index('blkNum')
         .openCursor(range).onsuccess = function(event) {
           var cursor = event.target.result;
           if (cursor) {
             proofs.push(cursor.value);
             cursor.continue();
           } else {
-            resolve(proofs);
+            resolve(proofs.map(p => {
+              return {blkNum: p.blkNum, value: p.value}
+            }));
           }
         };
     });
