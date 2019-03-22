@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/next": "^8.0.1",
     "@types/next-redux-wrapper": "^2.0.2",
+    "@types/react-icons": "^3.0.0",
     "@types/react-redux": "^7.0.3",
     "@types/styled-jsx": "^2.2.8",
     "dotenv-webpack": "^1.7.0",

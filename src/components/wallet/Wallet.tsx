@@ -9,6 +9,7 @@ import UTXOList from './UTXOList'
 import { FONT_SIZE, PADDING, MARGIN, BOX_SHADOW } from '../../constants/size'
 import colors from '../../constants/colors'
 import Link from 'next/link'
+import { TiArrowForward, TiArrowDownThick } from 'react-icons/ti'
 
 interface StateProps {
   wallet: WalletState
@@ -60,12 +61,18 @@ class WalletCard extends React.Component<StateProps> {
           <section className="link-section">
             <div className="link-card">
               <Link prefetch href="/transfer">
-                <button className="link-button">Transfer</button>
+                <button className="link-button">
+                  <TiArrowForward size={24} />
+                  <span>Transfer</span>
+                </button>
               </Link>
             </div>
             <div className="link-card">
               <Link prefetch href="/deposit">
-                <button className="link-button">Deposit</button>
+                <button className="link-button">
+                  <TiArrowDownThick size={24} />
+                  <span>Deposit</span>
+                </button>
               </Link>
             </div>
           </section>
@@ -128,8 +135,11 @@ class WalletCard extends React.Component<StateProps> {
             width: 100%;
             height: 100%;
             color: ${colors.TEXT_PRIMARY};
-            font-size: ${FONT_SIZE.MEDIUM};
-            text-transform: uppercase;
+            font-size: ${FONT_SIZE.TINY};
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           }
         `}</style>
       </main>
