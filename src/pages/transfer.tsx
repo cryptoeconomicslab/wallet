@@ -10,7 +10,8 @@ import {
 } from '../redux/modules/chamberWallet/wallet'
 import {
   changeAccountTransferTo,
-  changeTransferAmount
+  changeTransferAmount,
+  changeFFTransfer
 } from '../redux/modules/chamberWallet/transfer'
 import Heading from '../components/Heading'
 
@@ -20,6 +21,7 @@ interface StateProps {
 
 interface DispatchProps {
   loadWallet: () => void
+  changeFFTransfer: (isFF: boolean) => void
 }
 
 class TransferPage extends React.Component<StateProps & DispatchProps> {
@@ -27,6 +29,7 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
     if (isServer) {
       store.dispatch(changeTransferAmount(Number(query.amount) || 0))
       store.dispatch(changeAccountTransferTo(query.address || ''))
+      store.dispatch(changeFFTransfer(!!query.isFF))
     }
     return query
   }
@@ -36,6 +39,10 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
     if (wallet.status === WALLET_STATUS.INITIAL) {
       loadWallet()
     }
+  }
+
+  public componentWillUnmount() {
+    this.props.changeFFTransfer(false)
   }
 
   public render() {
@@ -65,5 +72,5 @@ export default connect(
   (state: AppState) => ({
     wallet: state.chamberWallet.wallet
   }),
-  { loadWallet }
+  { loadWallet, changeFFTransfer }
 )(TransferPage)

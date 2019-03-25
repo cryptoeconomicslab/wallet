@@ -16,6 +16,7 @@ export enum TRANSFER_ACTION_TYPES {
   TRANSFER_FAIL = 'TRANSFER_FAIL',
   CHANGE_ACCOUNT_TRANSFER_TO = 'CHANGE_ACCOUNT_TRANSFER_TO',
   CHANGE_TRANSFER_AMOUNT = 'CHANGE_TRANSFER_AMOUNT',
+  CHANGE_FF_TRANSFER = 'CHANGE_FF_TRANSFER',
   CLEAR_TRANSFER_ERROR = 'CLEAR_TRANSFER_ERROR',
   RESET = 'RESET'
 }
@@ -45,6 +46,11 @@ export const changeTransferAmount = (amount: number) => ({
   payload: amount
 })
 
+export const changeFFTransfer = (isFF: boolean) => ({
+  type: TRANSFER_ACTION_TYPES.CHANGE_FF_TRANSFER,
+  payload: isFF
+})
+
 export const clearTransferError = () => ({
   type: TRANSFER_ACTION_TYPES.CLEAR_TRANSFER_ERROR
 })
@@ -58,6 +64,7 @@ export interface State {
   status: TRANSFER_STATUS
   to: string // Address to transfer
   amount: number // amount to transfer
+  isFF: boolean
   error: Error | null
 }
 
@@ -65,6 +72,7 @@ const initialState: State = {
   status: TRANSFER_STATUS.INITIAL,
   to: '',
   amount: 0,
+  isFF: false,
   error: null
 }
 
@@ -104,6 +112,11 @@ const reducer = (
         ...state,
         amount: action.payload
       }
+    case TRANSFER_ACTION_TYPES.CHANGE_FF_TRANSFER:
+      return {
+        ...state,
+        isFF: action.payload
+      }
     case TRANSFER_ACTION_TYPES.CLEAR_TRANSFER_ERROR:
       return {
         ...state,
@@ -125,13 +138,14 @@ export const send = () => async (
   getState: () => AppState
 ) => {
   const state = getState()
-  const { to, amount } = state.chamberWallet.transfer
+  const { to, amount, isFF } = state.chamberWallet.transfer
   dispatch(transferStart({ to, amount }))
   const ref = state.chamberWallet.wallet.ref
   // TODO: validation
   // TODO: handle error on return value
+  const transferMethod = isFF ? ref.sendFastTransferToMerchant : ref.transfer
   try {
-    await ref.transfer(to, amount.toString())
+    await transferMethod(to, amount.toString())
   } catch (e) {
     dispatch(transferFail(e))
     return

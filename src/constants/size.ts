@@ -32,6 +32,7 @@ const PADDING = {
 }
 
 const RADIUS = {
+  SMALL: '3px',
   NORMAL: '6px',
   LARGE: '10px'
 }
