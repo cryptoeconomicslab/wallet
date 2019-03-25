@@ -36,10 +36,9 @@ class App extends React.Component<StateProps & DispatchProps> {
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
           <Wallet />
-        ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
-          <CreateWalletSection />
-        ) : wallet.status === WALLET_STATUS.ERROR ? (
-          <div>{wallet.error.message}</div>
+        ) : wallet.status === WALLET_STATUS.NO_WALLET ||
+          wallet.status === WALLET_STATUS.ERROR ? (
+          <CreateWalletSection error={wallet.error} />
         ) : null}
       </div>
     )

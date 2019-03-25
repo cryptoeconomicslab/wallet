@@ -52,10 +52,9 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
             <Heading balance={wallet.ref.getBalance()} />
             <Transfer />
           </>
-        ) : wallet.status === WALLET_STATUS.NO_WALLET ? (
-          <CreateWalletSection />
-        ) : wallet.status === WALLET_STATUS.ERROR ? (
-          <div>{wallet.error.message}</div>
+        ) : wallet.status === WALLET_STATUS.NO_WALLET ||
+          wallet.status === WALLET_STATUS.ERROR ? (
+          <CreateWalletSection error={wallet.error} />
         ) : null}
       </div>
     )
