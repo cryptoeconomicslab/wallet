@@ -143,9 +143,12 @@ export const send = () => async (
   const ref = state.chamberWallet.wallet.ref
   // TODO: validation
   // TODO: handle error on return value
-  const transferMethod = isFF ? ref.sendFastTransferToMerchant : ref.transfer
   try {
-    await transferMethod(to, amount.toString())
+    if (isFF) {
+      await ref.sendFastTransferToMerchant(to, amount.toString())
+    } else {
+      await ref.transfer(to, amount.toString())
+    }
   } catch (e) {
     dispatch(transferFail(e))
     return
