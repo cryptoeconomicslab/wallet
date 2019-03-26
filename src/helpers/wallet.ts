@@ -1,7 +1,10 @@
 import { ChamberWallet, PlasmaClient, IWalletStorage } from '@layer2/wallet'
+import { OwnState } from '@layer2/core'
 import { WalletStorage } from './storage'
 import { JsonRpcClient } from './jsonrpc'
 import { MQTTClient } from './mqtt'
+
+OwnState.setAddress('0x9fbda871d559710256a2502a2517b794b482db40')
 
 // TODO: add mnemonic
 interface CreateWalletArgs {

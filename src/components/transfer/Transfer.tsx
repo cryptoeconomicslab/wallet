@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AppState } from '../../redux/modules'
 import {
   State as TransferState,
   changeTransferAmount,
   changeAccountTransferTo,
+  changeFFTransfer,
   send,
   TRANSFER_STATUS
 } from '../../redux/modules/chamberWallet/transfer'
@@ -19,8 +19,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeAmount: (amount: number) => void
-  changeToAddress: (to: string) => void
+  changeTransferAmount: (amount: number) => void
+  changeAccountTransferTo: (to: string) => void
   send: () => void
 }
 
@@ -100,15 +100,15 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
   }
 
   private onChangeToAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { changeToAddress } = this.props
-    changeToAddress(e.target.value)
+    const { changeAccountTransferTo } = this.props
+    changeAccountTransferTo(e.target.value)
   }
 
   private onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { changeAmount } = this.props
+    const { changeTransferAmount } = this.props
     const val = Number(e.target.value)
     if (!Number.isNaN(val) && typeof val === 'number') {
-      changeAmount(val)
+      changeTransferAmount(val)
     }
   }
 
@@ -121,9 +121,10 @@ export default connect(
   (state: AppState) => ({
     transferState: state.chamberWallet.transfer
   }),
-  (dispatch: Dispatch): DispatchProps => ({
-    changeAmount: bindActionCreators(changeTransferAmount, dispatch),
-    changeToAddress: bindActionCreators(changeAccountTransferTo, dispatch),
-    send: bindActionCreators(send, dispatch)
-  })
+  {
+    changeTransferAmount,
+    changeAccountTransferTo,
+    changeFFTransfer,
+    send
+  }
 )(TransferSection)
