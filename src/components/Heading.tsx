@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FONT_SIZE, PADDING, BOX_SHADOW, FONT_WEIGHT } from '../constants/size'
 import colors from '../constants/colors'
 
+// TODO: subscribe wallet polling
 const Heading = ({ balance }) => {
   return (
     <section className="heading">

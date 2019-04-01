@@ -25,10 +25,13 @@ class WalletCard extends React.Component<StateProps> {
   public async componentDidMount() {
     const { ref } = this.props.wallet
 
-    ref.init(async () => {
-      await ref.syncChildChain()
-      this.forceUpdate()
-    })
+    ref.init()
+    ref.on('updated', this.onUpdate)
+  }
+
+  public componentWillUnmount() {
+    const { ref } = this.props.wallet
+    ref.off('updated', this.onUpdate)
   }
 
   public render() {
@@ -174,6 +177,12 @@ class WalletCard extends React.Component<StateProps> {
         `}</style>
       </main>
     )
+  }
+
+  private onUpdate = async () => {
+    const { ref } = this.props.wallet
+    await ref.syncChildChain()
+    this.forceUpdate()
   }
 }
 

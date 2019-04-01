@@ -18,6 +18,8 @@ export class WalletStorage {
       PlasmaBlockHeaderStore.createIndex('blkNum', 'blkNum', { unique: false });
       const proofStore = db.createObjectStore('proof', { keyPath: 'id' });
       proofStore.createIndex('utxoKey', 'utxoKey', { unique: false });
+      const userActionStore = db.createObjectStore('UserAction', { keyPath: 'id' })
+      userActionStore.createIndex('blkNum', 'blkNum', { unique: false });
     }
 
   }
@@ -120,4 +122,15 @@ export class WalletStorage {
     });
   }
 
+  addAction(actionId, blkNum, value) {
+    const storeName = 'UserAction'
+    this.db.transaction(storeName, 'readwrite')
+      .objectStore(storeName)
+      .add({
+        id: actionId,
+        blkNum,
+        value
+      })
+    return Promise.resolve(true)
+  }
 }

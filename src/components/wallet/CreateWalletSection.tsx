@@ -2,7 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { createWallet } from '../../redux/modules/chamberWallet/wallet'
 import { Button, InputControl } from '../common'
-
+import colors from '../../constants/colors'
+import { FONT_SIZE } from '../../constants/size'
 interface DispatchProps {
   createWallet: (privateKey: string) => void
 }
@@ -11,12 +12,21 @@ interface State {
   privateKey: string
 }
 
-class CreateWalletSection extends React.Component<DispatchProps, State> {
+interface Props {
+  error: Error | undefined
+}
+
+class CreateWalletSection extends React.Component<
+  Props & DispatchProps,
+  State
+> {
   public state = {
     privateKey: ''
   }
 
   public render() {
+    const { error } = this.props
+
     return (
       <div className="container">
         <h3>Create Wallet</h3>
@@ -28,6 +38,7 @@ class CreateWalletSection extends React.Component<DispatchProps, State> {
           }}
         />
         <Button onClick={this.handleCreateWallet}>Create Wallet</Button>
+        {error && <p className="error">{error.message}</p>}
         <style jsx>
           {`
             .container {
@@ -37,6 +48,11 @@ class CreateWalletSection extends React.Component<DispatchProps, State> {
               border-radius: 8px;
               margin: auto;
               overflow-y: scroll;
+            }
+
+            .error {
+              color: ${colors.TEXT_ERROR};
+              font-size: ${FONT_SIZE.MEDIUM};
             }
           `}
         </style>

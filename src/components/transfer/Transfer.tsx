@@ -1,15 +1,15 @@
 import * as React from 'react'
-import { Dispatch, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AppState } from '../../redux/modules'
 import {
   State as TransferState,
   changeTransferAmount,
   changeAccountTransferTo,
+  changeFFTransfer,
   send,
   TRANSFER_STATUS
 } from '../../redux/modules/chamberWallet/transfer'
-import { FONT_SIZE, MARGIN } from '../../constants/size'
+import { FONT_SIZE, MARGIN, RADIUS } from '../../constants/size'
 import { InputControl, Button } from '../common'
 import { PullRight } from '../utility'
 import colors from '../../constants/colors'
@@ -19,20 +19,22 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeAmount: (amount: number) => void
-  changeToAddress: (to: string) => void
+  changeTransferAmount: (amount: number) => void
+  changeAccountTransferTo: (to: string) => void
   send: () => void
 }
 
 class TransferSection extends React.Component<StateProps & DispatchProps> {
   public render() {
-    const { to, amount } = this.props.transferState
+    const { to, amount, isFF } = this.props.transferState
     const { transferState } = this.props
 
     return (
       <div className="container">
         <section className="body">
-          <h3 className="title">Transfer</h3>
+          <h3 className="title">
+            Transfer {isFF && <span className="title-note">Fast payment</span>}
+          </h3>
           <div className="transfer-form">
             <InputControl
               label="To"
@@ -72,6 +74,16 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
             text-transform: uppercase;
           }
 
+          .title-note {
+            margin-left: ${MARGIN.MEDIUM};
+            text-transform: capitalize;
+            background-color: ${colors.BG_SECONDARY};
+            color: ${colors.TEXT_INVERSE};
+            font-size: 1.2rem;
+            border-radius: ${RADIUS.SMALL};
+            padding: 0 4px;
+          }
+
           .message {
           }
 
@@ -88,15 +100,15 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
   }
 
   private onChangeToAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { changeToAddress } = this.props
-    changeToAddress(e.target.value)
+    const { changeAccountTransferTo } = this.props
+    changeAccountTransferTo(e.target.value)
   }
 
   private onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { changeAmount } = this.props
+    const { changeTransferAmount } = this.props
     const val = Number(e.target.value)
     if (!Number.isNaN(val) && typeof val === 'number') {
-      changeAmount(val)
+      changeTransferAmount(val)
     }
   }
 
@@ -109,9 +121,10 @@ export default connect(
   (state: AppState) => ({
     transferState: state.chamberWallet.transfer
   }),
-  (dispatch: Dispatch): DispatchProps => ({
-    changeAmount: bindActionCreators(changeTransferAmount, dispatch),
-    changeToAddress: bindActionCreators(changeAccountTransferTo, dispatch),
-    send: bindActionCreators(send, dispatch)
-  })
+  {
+    changeTransferAmount,
+    changeAccountTransferTo,
+    changeFFTransfer,
+    send
+  }
 )(TransferSection)
