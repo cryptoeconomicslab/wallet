@@ -25,15 +25,13 @@ class WalletCard extends React.Component<StateProps> {
   public async componentDidMount() {
     const { ref } = this.props.wallet
 
-    // TODO: change subscribe method to use ref.on('update')
-    ref.init(async () => {
-      await ref.syncChildChain()
-      this.forceUpdate()
-    })
+    ref.init()
+    ref.on('updated', this.onUpdate)
   }
 
   public componentWillUnmount() {
-    // TODO: unsubscribe
+    const { ref } = this.props.wallet
+    ref.off('updated', this.onUpdate)
   }
 
   public render() {
@@ -179,6 +177,12 @@ class WalletCard extends React.Component<StateProps> {
         `}</style>
       </main>
     )
+  }
+
+  private onUpdate = async () => {
+    const { ref } = this.props.wallet
+    await ref.syncChildChain()
+    this.forceUpdate()
   }
 }
 
