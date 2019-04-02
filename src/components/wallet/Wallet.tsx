@@ -6,6 +6,7 @@ import {
   State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
 import UTXOList from './UTXOList'
+import UserActionSection from './UserActionSection'
 import {
   FONT_SIZE,
   PADDING,
@@ -21,12 +22,25 @@ interface StateProps {
   wallet: WalletState
 }
 
-class WalletCard extends React.Component<StateProps> {
+interface State {
+  actions: any[]
+}
+
+class WalletCard extends React.Component<StateProps, State> {
+  public state = {
+    actions: []
+  }
+
   public async componentDidMount() {
     const { ref } = this.props.wallet
 
     ref.init()
     ref.on('updated', this.onUpdate)
+    ref.getUserActions(0).then(actions => {
+      this.setState({
+        actions
+      })
+    })
   }
 
   public componentWillUnmount() {
@@ -51,6 +65,7 @@ class WalletCard extends React.Component<StateProps> {
     const { ref } = wallet
     const balance = ref.getBalance()
     const utxos = ref.getUTXOArray()
+    const actions = this.state.actions
 
     return (
       <main>
@@ -93,7 +108,7 @@ class WalletCard extends React.Component<StateProps> {
               </Link>
             </div>
           </section>
-          {/* UTXOList section */}
+          <UserActionSection actions={actions} />
           <UTXOList utxos={utxos} wallet={ref} />
         </div>
         <style jsx>{`

@@ -21,7 +21,6 @@ export class WalletStorage {
       const userActionStore = db.createObjectStore('UserAction', { keyPath: 'id' })
       userActionStore.createIndex('blkNum', 'blkNum', { unique: false });
     }
-
   }
 
   add(key, item) {
@@ -132,5 +131,25 @@ export class WalletStorage {
         value
       })
     return Promise.resolve(true)
+  }
+
+  searchActions = (blkNum) => {
+    const storeName = 'UserAction'
+    console.log(this.db)
+    return new Promise((resolve, reject) => {
+      let actions = [];
+      this.db.transaction(storeName, 'readonly')
+        .objectStore(storeName)
+        .getAll().onsuccess = function(event) {
+          var cursor = event.target.result;
+          if (cursor) {
+            actions.push(cursor.value);
+            cursor.continue();
+          } else {
+            resolve(actions);
+          }
+        };
+    });
+
   }
 }
