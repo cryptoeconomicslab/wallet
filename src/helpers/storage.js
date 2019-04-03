@@ -137,17 +137,10 @@ export class WalletStorage {
     const storeName = 'UserAction'
     console.log(this.db)
     return new Promise((resolve, reject) => {
-      let actions = [];
       this.db.transaction(storeName, 'readonly')
         .objectStore(storeName)
         .getAll().onsuccess = function(event) {
-          var cursor = event.target.result;
-          if (cursor) {
-            actions.push(cursor.value);
-            cursor.continue();
-          } else {
-            resolve(actions);
-          }
+          resolve(event.target.result);
         };
     });
 

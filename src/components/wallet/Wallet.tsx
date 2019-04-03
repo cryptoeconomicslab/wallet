@@ -34,13 +34,10 @@ class WalletCard extends React.Component<StateProps, State> {
   public async componentDidMount() {
     const { ref } = this.props.wallet
 
-    ref.init()
+    await ref.init()
     ref.on('updated', this.onUpdate)
-    ref.getUserActions(0).then(actions => {
-      this.setState({
-        actions
-      })
-    })
+    const actions = await ref.getUserActions(0)
+    this.setState({ actions })
   }
 
   public componentWillUnmount() {
@@ -65,7 +62,7 @@ class WalletCard extends React.Component<StateProps, State> {
     const { ref } = wallet
     const balance = ref.getBalance()
     const utxos = ref.getUTXOArray()
-    const actions = this.state.actions
+    const { actions } = this.state
 
     return (
       <main>

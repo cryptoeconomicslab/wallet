@@ -10,7 +10,7 @@ export default class UserActionSection extends React.Component<Props> {
   public renderListItem = action => {
     return (
       <div className="item" key={action.id}>
-        {action.value.type}
+        {action.type}:{action.amount}
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;
@@ -59,7 +59,7 @@ export default class UserActionSection extends React.Component<Props> {
           }
 
           .list-container {
-            height: 140px;
+            min-height: 200px;
             overflow-y: scroll;
           }
         `}</style>
