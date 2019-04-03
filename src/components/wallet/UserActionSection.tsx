@@ -10,14 +10,28 @@ export default class UserActionSection extends React.Component<Props> {
   public renderListItem = action => {
     return (
       <div className="item" key={action.id}>
-        {action.type}:{action.amount}
+        <div className="heading">
+          <label className="item-label">{action.type}</label>
+          <span className="amount">{action.amount}</span>
+        </div>
+        <span className="address">{action.address}</span>
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;
             border-bottom: solid ${BORDER.THIN} ${colors.BORDER_COLOR_LIGHT};
             display: flex;
+            flex-direction: column;
+          }
+
+          .heading {
+            display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+          }
+
+          .address {
+            font-size: ${FONT_SIZE.TINY};
           }
         `}</style>
       </div>
@@ -30,7 +44,7 @@ export default class UserActionSection extends React.Component<Props> {
     return (
       <section className="container">
         <div className="title-section">
-          <h3 className="title">History</h3>
+          <h3 className="title">Transaction History</h3>
         </div>
         <div className="list-container">
           {actions.length === 0 ? (
