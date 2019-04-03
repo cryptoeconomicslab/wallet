@@ -18,7 +18,8 @@ export enum WALLET_ACTION_TYPES {
   LOAD_WALLET_SUCCESS = 'LOAD_WALLET_SUCCESS',
   LOAD_WALLET_FAIL = 'LOAD_WALLET_FAIL',
   CLEAR_WALLET_ERROR = 'CLEAR_WALLET_ERROR',
-  SET_WALLET_STATUS = 'SET_WALLET_STATUS'
+  SET_WALLET_STATUS = 'SET_WALLET_STATUS',
+  RECEIVE_TRANSACTION = 'RECEIVE_TRANSACTION'
 }
 
 // Action creators
@@ -43,6 +44,11 @@ export const clearWalletError = () => ({
 export const setWalletStatus = (status: WALLET_STATUS) => ({
   type: WALLET_ACTION_TYPES.SET_WALLET_STATUS,
   payload: status
+})
+
+const receiveTransaction = value => ({
+  type: WALLET_ACTION_TYPES.RECEIVE_TRANSACTION,
+  payload: value
 })
 
 // Reducer
@@ -101,14 +107,28 @@ const reducer = (state: State = initialState, action: WalletAction): State => {
 export default reducer
 
 // Thunks
+const onWalletLoaded = async (wallet: ChamberWallet, dispatch: Dispatch) => {
+  dispatch(loadWalletSuccess(wallet))
+  await wallet.init()
+  await wallet.syncChildChain()
+
+  // TODO: how to load transactions on initial mount
+  wallet.addListener('receive', value => {
+    console.log('received!!')
+    // TODO: change timestamp
+    const time = new Date()
+    dispatch(receiveTransaction({ ...value, time }))
+  })
+}
+
 export const loadWallet = () => {
   return async (dispatch: Dispatch) => {
     dispatch(loadWalletStart())
 
     // Load wallet if in storage
-    const wallet = WalletFactory.loadWallet()
+    const wallet = await WalletFactory.loadWallet()
     if (wallet) {
-      dispatch(loadWalletSuccess(wallet))
+      await onWalletLoaded(wallet, dispatch)
     } else {
       dispatch(setWalletStatus(WALLET_STATUS.NO_WALLET))
     }
@@ -123,7 +143,7 @@ export const createWallet = (privateKey: string) => {
 
     try {
       const wallet = WalletFactory.createWallet({ privateKey })
-      dispatch(loadWalletSuccess(wallet))
+      await onWalletLoaded(wallet, dispatch)
     } catch (e) {
       dispatch(loadWalletFail(e)) // TODO: make custom error ErrorCreateWallet
     }

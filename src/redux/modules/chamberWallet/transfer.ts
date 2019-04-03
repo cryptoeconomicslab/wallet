@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux'
 import { AppState } from '../index'
+import { ChamberResult } from '@layer2/core'
 
 // CONSTANTS
 export enum TRANSFER_STATUS {
@@ -145,15 +146,19 @@ export const send = () => async (
   // TODO: handle error on return value
   // TODO: store tokenId on redux store
   const tokenId = 0
-  try {
-    if (isFF) {
-      await ref.sendFastTransferToMerchant(to, tokenId, amount.toString())
-    } else {
-      await ref.transfer(to, tokenId, amount.toString())
-    }
-  } catch (e) {
-    dispatch(transferFail(e))
-    return
+  let result: ChamberResult<boolean>
+  if (isFF) {
+    result = await ref.sendFastTransferToMerchant(
+      to,
+      tokenId,
+      amount.toString()
+    )
+  } else {
+    result = await ref.transfer(to, tokenId, amount.toString())
   }
-  dispatch(transferSuccess())
+  if (result.isOk()) {
+    dispatch(transferSuccess())
+  } else {
+    dispatch(transferFail(new Error('transfer fail with some reason')))
+  }
 }
