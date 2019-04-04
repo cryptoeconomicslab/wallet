@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "plasma chamber wallet implementation for mobile web",
   "scripts": {
-    "start": "next src -p 8080",
+    "start": "NODE_ENV=development next src -p 8080",
     "start:prod": "NODE_ENV=develop1 next src -p 8081",
+    "build:testnet": "NODE_ENV=testnet next build src",
+    "export": "next export src",
     "tsc": "tsc",
     "lint": "tslint ./src/**/*"
   },
