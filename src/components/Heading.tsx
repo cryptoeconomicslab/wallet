@@ -1,10 +1,36 @@
 import * as React from 'react'
 import Link from 'next/link'
+import useEffectOnce from 'react-use/lib/useEffectOnce'
 import { FONT_SIZE, PADDING, BOX_SHADOW, FONT_WEIGHT } from '../constants/size'
 import colors from '../constants/colors'
+import { ChamberWallet } from '@layer2/wallet'
+import { BigNumber } from 'ethers/utils'
 
 // TODO: subscribe wallet polling
-const Heading = ({ balance }) => {
+const Heading = ({
+  balance,
+  wallet
+}: {
+  balance: BigNumber
+  wallet: ChamberWallet
+}) => {
+  const [balanceInner, setBalanceInner] = React.useState(balance.toNumber())
+  React.useEffect(() => {
+    function updater() {
+      setBalanceInner(wallet.getBalance().toNumber())
+    }
+    wallet.addListener('updated', updater)
+    return () => {
+      wallet.removeListener('updated', updater)
+    }
+  }, [balance])
+
+  useEffectOnce(() => {
+    wallet
+      .syncChildChain()
+      .then(() => setBalanceInner(wallet.getBalance().toNumber()))
+  })
+
   return (
     <section className="heading">
       <Link prefetch href="/">
@@ -12,9 +38,7 @@ const Heading = ({ balance }) => {
       </Link>
       <div className="balance-section">
         <h3 className="balance-title">Balance</h3>
-        <span className="balance-value">
-          {balance.toNumber().toLocaleString()}
-        </span>
+        <span className="balance-value">{balanceInner}</span>
       </div>
       <style jsx>{`
         .back-button {

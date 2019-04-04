@@ -96,15 +96,10 @@ export const deposit = (
   const state = getState()
   const ref: ChamberWallet = state.chamberWallet.wallet.ref
 
-  await ref.deposit(ether.toString())
-  // TODO: swithc based on result.
-  // currently @layer2/wallet does return no value.
-  // Fix @layer2/wallet ChamberWallet.deposit to return result value.
-  // if (result.success) {
-  //   dispatch(depositSuccess())
-  // } else {
-  //   dispatch(depositFail(result.error))
-  // }
-
-  dispatch(depositSuccess())
+  const result = await ref.deposit(ether.toString())
+  if (result.isOk()) {
+    dispatch(depositSuccess())
+  } else {
+    dispatch(depositFail(result.error()))
+  }
 }

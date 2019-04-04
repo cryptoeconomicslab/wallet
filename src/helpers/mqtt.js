@@ -31,4 +31,11 @@ export class MQTTClient {
       handler(message.toString())
     })
   }
+
+  unsubscribe(
+    topic,
+    handler
+  ) {
+    this.client.unsubscribe(topic, handler)
+  }
 }

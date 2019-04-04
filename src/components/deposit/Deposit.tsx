@@ -12,9 +12,11 @@ import { FONT_SIZE, PADDING, BORDER, MARGIN } from '../../constants/size'
 import colors from '../../constants/colors'
 import { Button, LoadingSpinner } from '../common'
 import { MarginHorizontal } from '../utility'
+import { ChamberWallet } from '@layer2/wallet'
 
 interface StateProps {
   depositState: DepositState
+  wallet: ChamberWallet
 }
 
 interface DispatchProps {
@@ -98,6 +100,10 @@ class Deposit extends React.Component<StateProps & DispatchProps, State> {
     )
   }
 
+  private onUpdate = () => {
+    this.forceUpdate()
+  }
+
   private handleDeposit = () => {
     this.props.deposit(this.state.depositAmount)
   }
@@ -111,7 +117,8 @@ class Deposit extends React.Component<StateProps & DispatchProps, State> {
 
 export default connect(
   (state: AppState) => ({
-    depositState: state.chamberWallet.deposit
+    depositState: state.chamberWallet.deposit,
+    wallet: state.chamberWallet.wallet.ref
   }),
   (dispatch: Dispatch): DispatchProps => ({
     deposit: (ether: number) => {

@@ -1,6 +1,5 @@
-import { ChamberWallet, PlasmaClient, IWalletStorage } from '@layer2/wallet'
+import { ChamberWallet, PlasmaClient, BrowserStorage } from '@layer2/wallet'
 import { OwnState } from '@layer2/core'
-import { WalletStorage } from './storage'
 import { JsonRpcClient } from './jsonrpc'
 import { MQTTClient } from './mqtt'
 
@@ -23,7 +22,7 @@ export default class WalletFactory {
       process.env.CHILDCHAIN_PUBSUB_ENDPOINT || childChainEndpoint
     )
     const client = new PlasmaClient(jsonRpcClient, mqttClient)
-    const storage: IWalletStorage = new WalletStorage() as any
+    const storage = new BrowserStorage()
     try {
       const wallet = ChamberWallet.createWalletWithPrivateKey(
         client,
@@ -33,17 +32,22 @@ export default class WalletFactory {
         privateKey
       )
       ;(window as any).wallet = wallet
-      // TODO: how to save privateKey?
-      storage.add('privateKey', privateKey)
+      storage.set('privateKey', privateKey)
       return wallet
     } catch (e) {
       throw e
     }
   }
 
-  public static loadWallet(): ChamberWallet | null {
-    const storage = new WalletStorage()
-    const privateKey = storage.get('privateKey')
+  public static async loadWallet(): Promise<ChamberWallet | null> {
+    const storage = new BrowserStorage()
+    let privateKey: string | null
+    try {
+      privateKey = await storage.get('privateKey')
+    } catch (e) {
+      privateKey = null
+    }
+
     if (privateKey) {
       const wallet = WalletFactory.createWallet({ privateKey })
       return wallet
