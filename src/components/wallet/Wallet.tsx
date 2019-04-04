@@ -18,6 +18,7 @@ import {
 import colors from '../../constants/colors'
 import Link from 'next/link'
 import { TiArrowForward, TiArrowDownThick, TiPlus } from 'react-icons/ti'
+import { getTokenName } from '../../helpers/utils'
 
 interface StateProps {
   wallet: WalletState
@@ -29,17 +30,6 @@ interface DispatchProps {
 
 interface State {
   actions: any[]
-}
-
-function getTokenName(tokenId: number) {
-  switch (tokenId) {
-    case 0:
-      return 'ETH'
-    case 1:
-      return 'DAI'
-    default:
-      return 'ETH'
-  }
 }
 
 class WalletCard extends React.Component<StateProps & DispatchProps, State> {
@@ -102,6 +92,7 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
             <div className="balance-body">
               <span className="balance-value">
                 {balance.toNumber().toLocaleString()}
+                <span className="unit">{getTokenName(selectedTokenId)}</span>
               </span>
               <Link href="/deposit" prefetch>
                 <button className="deposit-link">
@@ -177,6 +168,11 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
 
           .balance-value {
             font-size: ${FONT_SIZE.VERY_LARGE};
+          }
+
+          .unit {
+            font-size: ${FONT_SIZE.SEMI_LARGE};
+            margin-left: ${MARGIN.MEDIUM};
           }
 
           .deposit-link {
