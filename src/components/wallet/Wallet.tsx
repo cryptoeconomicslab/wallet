@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { AppState } from '../../redux/modules'
 import {
+  changeToken,
   WALLET_STATUS,
   State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
@@ -17,16 +18,21 @@ import {
 import colors from '../../constants/colors'
 import Link from 'next/link'
 import { TiArrowForward, TiArrowDownThick, TiPlus } from 'react-icons/ti'
+import { getTokenName } from '../../helpers/utils'
 
 interface StateProps {
   wallet: WalletState
+}
+
+interface DispatchProps {
+  changeToken: (token: { id: number; address: string }) => void
 }
 
 interface State {
   actions: any[]
 }
 
-class WalletCard extends React.Component<StateProps, State> {
+class WalletCard extends React.Component<StateProps & DispatchProps, State> {
   public state = {
     actions: []
   }
@@ -60,18 +66,33 @@ class WalletCard extends React.Component<StateProps, State> {
     }
 
     const { ref } = wallet
-    const balance = ref.getBalance()
+    const balance = ref.getBalance(wallet.selectedToken.id)
     const utxos = ref.getUTXOArray()
     const { actions } = this.state
+    const selectedTokenId = wallet.selectedToken.id
 
     return (
       <main>
         <section className="heading">
+          <div>
+            <select onChange={this.handleChangeToken}>
+              {wallet.tokens.map(token => (
+                <option
+                  key={token.id}
+                  value={token.id}
+                  selected={selectedTokenId === token.id}
+                >
+                  {getTokenName(token.id)}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="balance-section">
             <h3 className="balance-title">Balance</h3>
             <div className="balance-body">
               <span className="balance-value">
                 {balance.toNumber().toLocaleString()}
+                <span className="unit">{getTokenName(selectedTokenId)}</span>
               </span>
               <Link href="/deposit" prefetch>
                 <button className="deposit-link">
@@ -149,6 +170,11 @@ class WalletCard extends React.Component<StateProps, State> {
             font-size: ${FONT_SIZE.VERY_LARGE};
           }
 
+          .unit {
+            font-size: ${FONT_SIZE.SEMI_LARGE};
+            margin-left: ${MARGIN.MEDIUM};
+          }
+
           .deposit-link {
             padding: ${PADDING.MEDIUM};
             background-color: ${colors.BG_PRIMARY};
@@ -196,10 +222,18 @@ class WalletCard extends React.Component<StateProps, State> {
     await ref.syncChildChain()
     this.forceUpdate()
   }
+
+  private handleChangeToken = e => {
+    const id = Number(e.target.value)
+    const { wallet } = this.props
+    const selectedToken = wallet.tokens.find(t => t.id === id)
+    this.props.changeToken(selectedToken)
+  }
 }
 
 export default connect(
   (state: AppState): StateProps => ({
     wallet: state.chamberWallet.wallet
-  })
+  }),
+  { changeToken }
 )(WalletCard)

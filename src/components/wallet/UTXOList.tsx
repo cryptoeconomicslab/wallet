@@ -82,11 +82,6 @@ export default class UTXOList extends React.Component<Props> {
             font-size: ${FONT_SIZE.TINY};
             text-decoration: underline;
           }
-
-          .list-container {
-            height: 140px;
-            overflow-y: scroll;
-          }
         `}</style>
       </section>
     )

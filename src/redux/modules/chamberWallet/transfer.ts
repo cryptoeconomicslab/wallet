@@ -145,7 +145,7 @@ export const send = () => async (
   // TODO: validation
   // TODO: handle error on return value
   // TODO: store tokenId on redux store
-  const tokenId = 0
+  const tokenId = state.chamberWallet.wallet.selectedToken.id
   let result: ChamberResult<boolean>
   if (isFF) {
     result = await ref.sendFastTransferToMerchant(
@@ -159,6 +159,6 @@ export const send = () => async (
   if (result.isOk()) {
     dispatch(transferSuccess())
   } else {
-    dispatch(transferFail(new Error('transfer fail with some reason')))
+    dispatch(transferFail(result.error()))
   }
 }

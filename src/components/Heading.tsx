@@ -1,23 +1,32 @@
 import * as React from 'react'
 import Link from 'next/link'
 import useEffectOnce from 'react-use/lib/useEffectOnce'
-import { FONT_SIZE, PADDING, BOX_SHADOW, FONT_WEIGHT } from '../constants/size'
+import {
+  FONT_SIZE,
+  PADDING,
+  BOX_SHADOW,
+  FONT_WEIGHT,
+  MARGIN
+} from '../constants/size'
 import colors from '../constants/colors'
 import { ChamberWallet } from '@layer2/wallet'
 import { BigNumber } from 'ethers/utils'
+import { getTokenName } from '../helpers/utils'
 
 // TODO: subscribe wallet polling
 const Heading = ({
   balance,
-  wallet
+  wallet,
+  tokenId
 }: {
   balance: BigNumber
   wallet: ChamberWallet
+  tokenId: number
 }) => {
   const [balanceInner, setBalanceInner] = React.useState(balance.toNumber())
   React.useEffect(() => {
     function updater() {
-      setBalanceInner(wallet.getBalance().toNumber())
+      setBalanceInner(wallet.getBalance(tokenId).toNumber())
     }
     wallet.addListener('updated', updater)
     return () => {
@@ -28,7 +37,7 @@ const Heading = ({
   useEffectOnce(() => {
     wallet
       .syncChildChain()
-      .then(() => setBalanceInner(wallet.getBalance().toNumber()))
+      .then(() => setBalanceInner(wallet.getBalance(tokenId).toNumber()))
   })
 
   return (
@@ -38,7 +47,10 @@ const Heading = ({
       </Link>
       <div className="balance-section">
         <h3 className="balance-title">Balance</h3>
-        <span className="balance-value">{balanceInner}</span>
+        <span className="balance-value">
+          {balanceInner}
+          <span className="balance-unit">{getTokenName(tokenId)}</span>
+        </span>
       </div>
       <style jsx>{`
         .back-button {
@@ -67,6 +79,11 @@ const Heading = ({
 
         .balance-value {
           font-size: ${FONT_SIZE.LARGE};
+        }
+
+        .balance-unit {
+          font-size: ${FONT_SIZE.SEMI_LARGE};
+          margin-left: ${MARGIN.MEDIUM};
         }
       `}</style>
     </section>
