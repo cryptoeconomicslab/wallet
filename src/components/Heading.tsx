@@ -9,15 +9,17 @@ import { BigNumber } from 'ethers/utils'
 // TODO: subscribe wallet polling
 const Heading = ({
   balance,
-  wallet
+  wallet,
+  tokenId
 }: {
   balance: BigNumber
   wallet: ChamberWallet
+  tokenId: number
 }) => {
   const [balanceInner, setBalanceInner] = React.useState(balance.toNumber())
   React.useEffect(() => {
     function updater() {
-      setBalanceInner(wallet.getBalance().toNumber())
+      setBalanceInner(wallet.getBalance(tokenId).toNumber())
     }
     wallet.addListener('updated', updater)
     return () => {
@@ -28,7 +30,7 @@ const Heading = ({
   useEffectOnce(() => {
     wallet
       .syncChildChain()
-      .then(() => setBalanceInner(wallet.getBalance().toNumber()))
+      .then(() => setBalanceInner(wallet.getBalance(tokenId).toNumber()))
   })
 
   return (

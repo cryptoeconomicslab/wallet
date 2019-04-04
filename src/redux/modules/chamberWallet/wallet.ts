@@ -19,7 +19,9 @@ export enum WALLET_ACTION_TYPES {
   LOAD_WALLET_FAIL = 'LOAD_WALLET_FAIL',
   CLEAR_WALLET_ERROR = 'CLEAR_WALLET_ERROR',
   SET_WALLET_STATUS = 'SET_WALLET_STATUS',
-  RECEIVE_TRANSACTION = 'RECEIVE_TRANSACTION'
+  RECEIVE_TRANSACTION = 'RECEIVE_TRANSACTION',
+  TOKEN_LOADED = 'TOKEN_LOADED',
+  CHANGE_TOKEN = 'CHANGE_TOKEN'
 }
 
 // Action creators
@@ -46,9 +48,19 @@ export const setWalletStatus = (status: WALLET_STATUS) => ({
   payload: status
 })
 
-const receiveTransaction = value => ({
+export const receiveTransaction = value => ({
   type: WALLET_ACTION_TYPES.RECEIVE_TRANSACTION,
   payload: value
+})
+
+export const changeToken = token => ({
+  type: WALLET_ACTION_TYPES.CHANGE_TOKEN,
+  payload: token
+})
+
+export const tokenLoaded = tokens => ({
+  type: WALLET_ACTION_TYPES.TOKEN_LOADED,
+  payload: tokens
 })
 
 // Reducer
@@ -56,12 +68,25 @@ export interface State {
   status: WALLET_STATUS
   error: Error | null
   ref: ChamberWallet | null
+  tokens: Array<{
+    id: number
+    address: string
+  }>
+  selectedToken: {
+    id: number
+    address: string
+  }
 }
 
 const initialState: State = {
   status: WALLET_STATUS.INITIAL,
   ref: null,
-  error: null
+  error: null,
+  tokens: [],
+  selectedToken: {
+    id: 0,
+    address: '"0x0000000000000000000000000000000000000000"'
+  }
 }
 
 interface WalletAction {
@@ -99,6 +124,16 @@ const reducer = (state: State = initialState, action: WalletAction): State => {
         status: WALLET_STATUS.INITIAL,
         error: null
       }
+    case WALLET_ACTION_TYPES.TOKEN_LOADED:
+      return {
+        ...state,
+        tokens: action.payload
+      }
+    case WALLET_ACTION_TYPES.CHANGE_TOKEN:
+      return {
+        ...state,
+        selectedToken: action.payload
+      }
     default:
       return state
   }
@@ -119,6 +154,9 @@ const onWalletLoaded = async (wallet: ChamberWallet, dispatch: Dispatch) => {
     const time = new Date()
     dispatch(receiveTransaction({ ...value, time }))
   })
+
+  const tokens = await wallet.getAvailableTokens()
+  dispatch(tokenLoaded(tokens))
 }
 
 export const loadWallet = () => {

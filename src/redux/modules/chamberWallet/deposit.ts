@@ -20,9 +20,9 @@ export enum DEPOSIT_ACTION_TYPES {
 }
 
 // Action creators
-export const depositStart = (amount: number) => ({
+export const depositStart = (amount: number, token) => ({
   type: DEPOSIT_ACTION_TYPES.DEPOSIT_START,
-  payload: amount
+  payload: { amount, token }
 })
 
 export const depositSuccess = () => ({
@@ -87,16 +87,21 @@ export default reducer
 
 // thunks
 export const deposit = (
-  ether: number
+  amount: number
 ): ThunkAction<void, AppState, void, any> => async (
   dispatch: Dispatch,
   getState /** TODO: add util Type for getState */
 ) => {
-  dispatch(depositStart(ether))
   const state = getState()
+  const token = state.chamberWallet.wallet.selectedToken
+  dispatch(depositStart(amount, token))
   const ref: ChamberWallet = state.chamberWallet.wallet.ref
 
-  const result = await ref.deposit(ether.toString())
+  const result =
+    token.id === 0
+      ? await ref.deposit(amount.toString())
+      : await ref.depositERC20(token.address, amount)
+
   if (result.isOk()) {
     dispatch(depositSuccess())
   } else {

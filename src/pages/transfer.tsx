@@ -56,7 +56,11 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
           <div>LOADING...</div>
         ) : wallet.status === WALLET_STATUS.LOADED ? (
           <>
-            <Heading wallet={wallet.ref} balance={wallet.ref.getBalance()} />
+            <Heading
+              wallet={wallet.ref}
+              balance={wallet.ref.getBalance(wallet.selectedToken.id)}
+              tokenId={wallet.selectedToken.id}
+            />
             <Transfer />
           </>
         ) : wallet.status === WALLET_STATUS.NO_WALLET ||

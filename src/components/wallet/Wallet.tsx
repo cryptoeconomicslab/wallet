@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { AppState } from '../../redux/modules'
 import {
+  changeToken,
   WALLET_STATUS,
   State as WalletState
 } from '../../redux/modules/chamberWallet/wallet'
@@ -22,11 +23,26 @@ interface StateProps {
   wallet: WalletState
 }
 
+interface DispatchProps {
+  changeToken: (token: { id: number; address: string }) => void
+}
+
 interface State {
   actions: any[]
 }
 
-class WalletCard extends React.Component<StateProps, State> {
+function getTokenName(tokenId: number) {
+  switch (tokenId) {
+    case 0:
+      return 'ETH'
+    case 1:
+      return 'DAI'
+    default:
+      return 'ETH'
+  }
+}
+
+class WalletCard extends React.Component<StateProps & DispatchProps, State> {
   public state = {
     actions: []
   }
@@ -60,13 +76,27 @@ class WalletCard extends React.Component<StateProps, State> {
     }
 
     const { ref } = wallet
-    const balance = ref.getBalance()
+    const balance = ref.getBalance(wallet.selectedToken.id)
     const utxos = ref.getUTXOArray()
     const { actions } = this.state
+    const selectedTokenId = wallet.selectedToken.id
 
     return (
       <main>
         <section className="heading">
+          <div>
+            <select onChange={this.handleChangeToken}>
+              {wallet.tokens.map(token => (
+                <option
+                  key={token.id}
+                  value={token.id}
+                  selected={selectedTokenId === token.id}
+                >
+                  {getTokenName(token.id)}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="balance-section">
             <h3 className="balance-title">Balance</h3>
             <div className="balance-body">
@@ -196,10 +226,18 @@ class WalletCard extends React.Component<StateProps, State> {
     await ref.syncChildChain()
     this.forceUpdate()
   }
+
+  private handleChangeToken = e => {
+    const id = Number(e.target.value)
+    const { wallet } = this.props
+    const selectedToken = wallet.tokens.find(t => t.id === id)
+    this.props.changeToken(selectedToken)
+  }
 }
 
 export default connect(
   (state: AppState): StateProps => ({
     wallet: state.chamberWallet.wallet
-  })
+  }),
+  { changeToken }
 )(WalletCard)
