@@ -4,6 +4,8 @@ export function getTokenName(tokenId: number) {
     case 0:
       return 'ETH'
     case 1:
+      return 'TEST'
+    case 2:
       return 'DAI'
     default:
       return 'ETH'
