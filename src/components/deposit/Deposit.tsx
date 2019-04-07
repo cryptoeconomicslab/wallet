@@ -121,9 +121,7 @@ export default connect(
     depositState: state.chamberWallet.deposit,
     wallet: state.chamberWallet.wallet
   }),
-  (dispatch: Dispatch): DispatchProps => ({
-    deposit: (ether: number) => {
-      ;(dispatch as ThunkDispatch<void, AppState, any>)(deposit(ether))
-    }
-  })
+  {
+    deposit
+  }
 )(Deposit)

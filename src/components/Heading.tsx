@@ -29,10 +29,11 @@ const Heading = ({
       setBalanceInner(wallet.getBalance(tokenId).toNumber())
     }
     wallet.addListener('updated', updater)
+    setBalanceInner(wallet.getBalance(tokenId).toNumber())
     return () => {
       wallet.removeListener('updated', updater)
     }
-  }, [balance])
+  }, [balance, tokenId])
 
   useEffectOnce(() => {
     wallet

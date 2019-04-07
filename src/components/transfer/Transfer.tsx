@@ -9,25 +9,33 @@ import {
   send,
   TRANSFER_STATUS
 } from '../../redux/modules/chamberWallet/transfer'
+import {
+  State as WalletState,
+  changeToken
+} from '../../redux/modules/chamberWallet/wallet'
 import { FONT_SIZE, MARGIN, RADIUS } from '../../constants/size'
 import { InputControl, Button } from '../common'
 import { PullRight } from '../utility'
 import colors from '../../constants/colors'
+import { getTokenName } from '../../helpers/utils'
 
 interface StateProps {
   transferState: TransferState
+  wallet: WalletState
 }
 
 interface DispatchProps {
   changeTransferAmount: (amount: number) => void
   changeAccountTransferTo: (to: string) => void
   send: () => void
+  changeToken: (token: { id: number; address: string }) => void
 }
 
 class TransferSection extends React.Component<StateProps & DispatchProps> {
   public render() {
     const { to, amount, isFF } = this.props.transferState
-    const { transferState } = this.props
+    const { transferState, wallet } = this.props
+    const tokenId = wallet.selectedToken.id
 
     return (
       <div className="container">
@@ -35,6 +43,15 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
           <h3 className="title">
             Transfer {isFF && <span className="title-note">Fast payment</span>}
           </h3>
+          <div>
+            <select onChange={this.handleChangeToken} value={tokenId}>
+              {wallet.tokens.map(token => (
+                <option key={token.id} value={token.id}>
+                  {getTokenName(token.id)}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="transfer-form">
             <InputControl
               label="To"
@@ -115,16 +132,25 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
   private onClickSend = () => {
     this.props.send()
   }
+
+  private handleChangeToken = e => {
+    const id = Number(e.target.value)
+    const { wallet } = this.props
+    const selectedToken = wallet.tokens.find(t => t.id === id)
+    this.props.changeToken(selectedToken)
+  }
 }
 
 export default connect(
   (state: AppState) => ({
-    transferState: state.chamberWallet.transfer
+    transferState: state.chamberWallet.transfer,
+    wallet: state.chamberWallet.wallet
   }),
   {
     changeTransferAmount,
     changeAccountTransferTo,
     changeFFTransfer,
-    send
+    send,
+    changeToken
   }
 )(TransferSection)

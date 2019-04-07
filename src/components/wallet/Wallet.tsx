@@ -75,13 +75,9 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
       <main>
         <section className="heading">
           <div>
-            <select onChange={this.handleChangeToken}>
+            <select onChange={this.handleChangeToken} value={selectedTokenId}>
               {wallet.tokens.map(token => (
-                <option
-                  key={token.id}
-                  value={token.id}
-                  selected={selectedTokenId === token.id}
-                >
+                <option key={token.id} value={token.id}>
                   {getTokenName(token.id)}
                 </option>
               ))}
