@@ -70,6 +70,9 @@ class Deposit extends React.Component<StateProps & DispatchProps, State> {
               </Button>
             </div>
           </div>
+          {depositStatus === DEPOSIT_STATUS.ERROR && (
+            <p style={{color: 'red',textAlign: 'right'}}>{this.props.depositState.error}</p>
+          )}
         </section>
         <style jsx>{`
           .body {

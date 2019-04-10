@@ -92,19 +92,28 @@ export const deposit = (
   dispatch: Dispatch,
   getState /** TODO: add util Type for getState */
 ) => {
+  let result, isError, errorMsg
+
   const state = getState()
   const token = state.chamberWallet.wallet.selectedToken
   dispatch(depositStart(amount, token))
   const ref: ChamberWallet = state.chamberWallet.wallet.ref
 
-  const result =
+
+  try {
+    result =
     token.id === 0
       ? await ref.deposit(amount.toString())
       : await ref.depositERC20(token.address, amount)
+  } catch(e){
+    isError = true
+    errorMsg = e.message
+  }
 
-  if (result.isOk()) {
+  if (result && result.isOk() && isError) {
     dispatch(depositSuccess())
   } else {
-    dispatch(depositFail(result.error()))
+    errorMsg = (errorMsg) ? errorMsg : result.error()
+    dispatch(depositFail(errorMsg))
   }
 }
