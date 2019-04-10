@@ -10,7 +10,7 @@ import {
 } from '../constants/size'
 import colors from '../constants/colors'
 import { ChamberWallet } from '@layer2/wallet'
-import { getTokenName, getUnitEther } from '../helpers/utils'
+import { getTokenName, getTokenMinDigits } from '../helpers/utils'
 
 // TODO: subscribe wallet polling
 const Heading = ({
@@ -25,7 +25,7 @@ const Heading = ({
   const [balanceInner, setBalanceInner] = React.useState(balance)
   React.useEffect(() => {
     function updater() {
-      setBalanceInner(getUnitEther(tokenId, wallet.getBalance(tokenId)))
+      setBalanceInner(getTokenMinDigits(tokenId, wallet.getBalance(tokenId)))
     }
     wallet.addListener('updated', updater)
     return () => {
@@ -36,7 +36,7 @@ const Heading = ({
   useEffectOnce(() => {
     wallet
       .syncChildChain()
-      .then(() => setBalanceInner(getUnitEther(tokenId, wallet.getBalance(tokenId))))
+      .then(() => setBalanceInner(getTokenMinDigits(tokenId, wallet.getBalance(tokenId))))
   })
 
   return (

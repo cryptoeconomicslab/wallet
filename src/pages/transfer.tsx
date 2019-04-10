@@ -14,7 +14,7 @@ import {
   changeFFTransfer
 } from '../redux/modules/chamberWallet/transfer'
 import Heading from '../components/Heading'
-import { getUnitEther } from "../helpers/utils";
+import { getTokenMinDigits } from "../helpers/utils";
 
 interface StateProps {
   wallet: WalletState
@@ -59,7 +59,7 @@ class TransferPage extends React.Component<StateProps & DispatchProps> {
           <>
             <Heading
               wallet={wallet.ref}
-              balance={getUnitEther(wallet.selectedToken.id, wallet.ref.getBalance(wallet.selectedToken.id))}
+              balance={getTokenMinDigits(wallet.selectedToken.id, wallet.ref.getBalance(wallet.selectedToken.id))}
               tokenId={wallet.selectedToken.id}
             />
             <Transfer />

@@ -22,7 +22,7 @@ export function getTokenName(tokenId: number) {
 
 // TODO: create for general
 // TODO: support a decimal
-export function getUnitEther(tokenId: number, amount: BigNumber): number {
+export function getTokenMinDigits(tokenId: number, amount: BigNumber): number {
   switch (tokenId) {
     case 0:
       return parseInt(formatEther(parseUnits(amount.toString(), 'gwei')))
@@ -31,7 +31,7 @@ export function getUnitEther(tokenId: number, amount: BigNumber): number {
   }
 }
 
-export function getUnitGwei(tokenId: number, amount: number): number {
+export function getTokenMaxDigits(tokenId: number, amount: number): number {
   switch (tokenId) {
     case 0:
       return parseInt(formatUnits(parseEther(amount.toString()), 'gwei'))
