@@ -17,27 +17,18 @@ tokenDecimalMeta[TEST] = 1
 tokenDecimalMeta[DAI] = 18
 
 function format(amount, tokenId, type){
+  if(type!=='max' && type!=='min') throw new Error("type must be max or min")
   let decimalOrName = tokenDecimalMeta[getTokenName(tokenId)]
+  let input = amount.toString()
 
-  if(type==='max'){
-    if(decimalOrName==='gwei'){
-      //ETH
-      return commify(formatUnits(parseEther(amount.toString()), decimalOrName))
-    }else{
-      //ERC-20
-      return commify(formatUnits(parseUnits(amount.toString()), decimalOrName))
+  if(decimalOrName==='gwei'){
+    if(type==='max'){
+      return commify(formatUnits(parseEther(input), decimalOrName))
+    } else {
+      return commify(formatEther(parseUnits(input, decimalOrName)))
     }
-  } else if (type==='min'){
-    if(decimalOrName==='gwei'){
-      //ETH
-      return commify(formatEther(parseUnits(amount.toString(), decimalOrName)))
-    }else{
-      //ERC-20
-      return commify(formatUnits(parseUnits(amount.toString()), decimalOrName))
-    }
-
-  } else {
-    throw new Error("This func requires type arg.")
+  }else{
+    return commify(formatUnits(input, decimalOrName))
   }
 }
 
