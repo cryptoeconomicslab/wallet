@@ -1,6 +1,8 @@
 import {
   BigNumber,
   formatEther,
+  formatUnits,
+  parseEther,
   parseUnits
 } from 'ethers/utils'
 
@@ -18,11 +20,22 @@ export function getTokenName(tokenId: number) {
   }
 }
 
-export function changeUnit(tokenId: number, amount: BigNumber): number {
+// TODO: create for general
+// TODO: support a decimal
+export function getUnitEther(tokenId: number, amount: BigNumber): number {
   switch (tokenId) {
     case 0:
       return parseInt(formatEther(parseUnits(amount.toString(), 'gwei')))
     default:
       return amount.toNumber()
+  }
+}
+
+export function getUnitGwei(tokenId: number, amount: number): number {
+  switch (tokenId) {
+    case 0:
+      return parseInt(formatUnits(parseEther(amount.toString()), 'gwei'))
+    default:
+      return amount
   }
 }

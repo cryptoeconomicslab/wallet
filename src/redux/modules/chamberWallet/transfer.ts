@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux'
 import { AppState } from '../index'
 import { ChamberResult } from '@layer2/core'
+import { getUnitGwei } from '../../../helpers/utils'
 
 // CONSTANTS
 export enum TRANSFER_STATUS {
@@ -146,15 +147,16 @@ export const send = () => async (
   // TODO: handle error on return value
   // TODO: store tokenId on redux store
   const tokenId = state.chamberWallet.wallet.selectedToken.id
+  const sendAmount = getUnitGwei(tokenId, amount).toString()
   let result: ChamberResult<boolean>
   if (isFF) {
     result = await ref.sendFastTransferToMerchant(
       to,
       tokenId,
-      amount.toString()
+      sendAmount
     )
   } else {
-    result = await ref.transfer(to, tokenId, amount.toString())
+    result = await ref.transfer(to, tokenId, sendAmount)
   }
   if (result.isOk()) {
     dispatch(transferSuccess())
