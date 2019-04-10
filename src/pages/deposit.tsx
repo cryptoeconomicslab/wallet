@@ -9,6 +9,7 @@ import {
   loadWallet
 } from '../redux/modules/chamberWallet/wallet'
 import Heading from '../components/Heading'
+import { changeUnit } from '../helpers/utils'
 
 interface StateProps {
   wallet: WalletState
@@ -38,7 +39,7 @@ class DepositPage extends React.Component<StateProps & DispatchProps> {
           <>
             <Heading
               wallet={wallet.ref}
-              balance={wallet.ref.getBalance(wallet.selectedToken.id)}
+              balance={changeUnit(wallet.selectedToken.id, wallet.ref.getBalance(wallet.selectedToken.id))}
               tokenId={wallet.selectedToken.id}
             />
             <Deposit />
