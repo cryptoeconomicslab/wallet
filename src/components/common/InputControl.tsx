@@ -6,13 +6,14 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   value: any
   label: string
+  type: string
 }
 
-const InputControl = ({ onChange, value, label }: Props) => {
+const InputControl = ({ onChange, value, label, type }: Props) => {
   return (
     <div>
       <label>{label}</label>
-      <input onChange={onChange} value={value} />
+      <input onChange={onChange} value={value} type={type} />
       <style jsx>{`
         div {
           margin-bottom: ${MARGIN.MEDIUM};

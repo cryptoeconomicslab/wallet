@@ -40,9 +40,11 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
               label="To"
               onChange={this.onChangeToAddress}
               value={to}
+              type='text'
             />
             <InputControl
               label="Amount"
+              type="number"
               onChange={this.onChangeAmount}
               value={amount}
             />
