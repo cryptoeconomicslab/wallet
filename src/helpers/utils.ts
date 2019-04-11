@@ -1,34 +1,34 @@
 import {
   BigNumber,
-  formatEther,
   formatUnits,
-  parseEther,
-  parseUnits,
   commify
 } from 'ethers/utils'
+
+
 
 const ETH = 'ETH'
 const TEST = 'TEST'
 const DAI = 'DAI'
+enum TokenDecimalMetas {
+  ETH = 9, // because `gwei` has 9 digits
+  TEST = 1,
+  DAI = 18
+}
+enum FormatTypes {
+  ABBREVIATED = 0,
+  VERBOSE = 1
+}
 
-let tokenDecimalMeta = {}
-tokenDecimalMeta[ETH] = 'gwei'
-tokenDecimalMeta[TEST] = 1
-tokenDecimalMeta[DAI] = 18
-
-function format(amount, tokenId, type){
-  if(type!=='max' && type!=='min') throw new Error("type must be max or min")
-  let decimalOrName = tokenDecimalMeta[getTokenName(tokenId)]
+function format(amount:BigNumber, tokenId:number, formatType:FormatTypes):string{
+  if( !(tokenId || tokenId === 0) ) throw new Error("This func requires TokenId arg.") // 0 is false in JS
+  let decimalOrName = TokenDecimalMetas[getTokenName(tokenId)]
   let input = amount.toString()
 
-  if(decimalOrName==='gwei'){
-    if(type==='max'){
-      return commify(formatUnits(parseEther(input), decimalOrName))
-    } else {
-      return commify(formatEther(parseUnits(input, decimalOrName)))
-    }
-  }else{
-    return commify(formatUnits(input, decimalOrName))
+  switch(formatType){
+    case FormatTypes.ABBREVIATED:
+      return parseInt(formatUnits(input, decimalOrName))+''
+    case FormatTypes.VERBOSE:
+      return commify(formatUnits(input, decimalOrName))
   }
 }
 
@@ -46,14 +46,9 @@ export function getTokenName(tokenId: number) {
   }
 }
 
-// TODO: create for general
-// TODO: support a decimal
 export function getTokenMinDigits(tokenId: number, amount: BigNumber): string {
-  if(!tokenId && tokenId !== 0) throw new Error("This func requires TokenId arg.")
-  return format(amount, tokenId, 'min')
+  return format(amount, tokenId, FormatTypes.ABBREVIATED)
 }
-
-export function getTokenMaxDigits(tokenId: number, amount: number): string {
-  if(!tokenId && tokenId !== 0) throw new Error("This func requires TokenId arg.")
-  return format(amount, tokenId, 'max')
+export function getTokenMaxDigits(tokenId: number, amount: BigNumber): string {
+  return format(amount, tokenId, FormatTypes.VERBOSE)
 }
