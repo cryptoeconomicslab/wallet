@@ -18,8 +18,8 @@ import {
 import colors from '../../constants/colors'
 import Link from 'next/link'
 import { TiArrowForward, TiArrowDownThick, TiPlus } from 'react-icons/ti'
-import { getTokenName } from '../../helpers/utils'
 import ExitList from './ExitList'
+import { getTokenName, getTokenMinDigits } from '../../helpers/utils'
 
 interface StateProps {
   wallet: WalletState
@@ -93,7 +93,7 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
             <h3 className="balance-title">Balance</h3>
             <div className="balance-body">
               <span className="balance-value">
-                {balance.toNumber().toLocaleString()}
+                {getTokenMinDigits(selectedTokenId, balance)}
                 <span className="unit">{getTokenName(selectedTokenId)}</span>
               </span>
               <Link href="/deposit" prefetch>
