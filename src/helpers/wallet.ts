@@ -1,9 +1,7 @@
 import { ChamberWallet, PlasmaClient, BrowserStorage } from '@layer2/wallet'
-import { OwnState } from '@layer2/core'
 import { JsonRpcClient } from './jsonrpc'
 import { MQTTClient } from './mqtt'
 
-OwnState.setAddress('0x9fbda871d559710256a2502a2517b794b482db40')
 
 // TODO: add mnemonic
 interface CreateWalletArgs {
@@ -23,13 +21,22 @@ export default class WalletFactory {
     )
     const client = new PlasmaClient(jsonRpcClient, mqttClient)
     const storage = new BrowserStorage()
+    const options = {
+      // kovan
+      // initialBlock: 10000000,
+      initialBlock: process.env.INITIAL_BLOCK || 1,
+      interval: 20000,
+      confirmation: process.env.CONFIRMATION || 0,
+      OwnershipPredicate: process.env.OWNERSHIP_PREDICATE
+    }    
     try {
       const wallet = ChamberWallet.createWalletWithPrivateKey(
         client,
         process.env.ROOTCHAIN_ENDPOINT,
         process.env.ROOTCHAIN_ADDRESS,
         storage,
-        privateKey
+        privateKey,
+        options
       )
       ;(window as any).wallet = wallet
       storage.set('privateKey', privateKey)
