@@ -18,6 +18,7 @@ import {
 import colors from '../../constants/colors'
 import Link from 'next/link'
 import { TiArrowForward, TiArrowDownThick, TiPlus } from 'react-icons/ti'
+import ExitList from './ExitList'
 import { getTokenName, getTokenMinDigits } from '../../helpers/utils'
 
 interface StateProps {
@@ -68,6 +69,7 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
     const { ref } = wallet
     const balance = ref.getBalance(wallet.selectedToken.id)
     const utxos = ref.getUTXOArray()
+    const exits = ref.getExits()
     const { actions } = this.state
     const selectedTokenId = wallet.selectedToken.id
 
@@ -128,6 +130,7 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
           </section>
           <UserActionSection actions={actions} />
           <UTXOList utxos={utxos} wallet={ref} />
+          <ExitList exits={exits} />
         </div>
         <style jsx>{`
           .body {
