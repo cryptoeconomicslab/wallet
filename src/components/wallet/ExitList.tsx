@@ -5,6 +5,7 @@ import { Exit } from '@layer2/wallet/dist/models'
 
 interface Props {
   exits: Exit[]
+  finalizeExit: (id: string) => any
 }
 
 export default class ExitList extends React.Component<Props> {
@@ -19,6 +20,11 @@ export default class ExitList extends React.Component<Props> {
           {segment.end.toNumber().toLocaleString()}
         </div>
         <div>{exitableAt.toISOString()}</div>
+        <div>
+          <button onClick={() => this.props.finalizeExit(exit.id.toString())}>
+            Finalize Exit
+          </button>
+        </div>
         <style jsx>{`
           .item {
             padding: ${PADDING.MEDIUM} 0;

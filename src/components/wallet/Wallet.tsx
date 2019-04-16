@@ -130,7 +130,7 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
           </section>
           <UserActionSection actions={actions} />
           <UTXOList utxos={utxos} wallet={ref} />
-          <ExitList exits={exits} />
+          <ExitList exits={exits} finalizeExit={this.handleFinalizeExit} />
         </div>
         <style jsx>{`
           .body {
@@ -231,6 +231,13 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
     const { wallet } = this.props
     const selectedToken = wallet.tokens.find(t => t.id === id)
     this.props.changeToken(selectedToken)
+  }
+
+  private handleFinalizeExit = (exitId: string) => {
+    this.props.wallet.ref
+      .finalizeExit(exitId)
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   }
 }
 
