@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { FONT_SIZE, PADDING, BORDER } from '../../constants/size'
 import colors from '../../constants/colors'
-import { Exit } from '@layer2/wallet/dist/models'
 import { Button } from '../common'
+import { Exit } from '@layer2/wallet/dist/models'
 
 interface Props {
   exits: Exit[]
@@ -22,8 +22,11 @@ export default class ExitList extends React.Component<Props> {
         </div>
         <div>{exitableAt.toISOString()}</div>
         <div>
-          <Button onClick={() => this.props.finalizeExit(exit.id.toString())}>
-            Finalize
+          <Button
+            customSize="small"
+            onClick={() => this.props.finalizeExit(exit.id.toString())}
+          >
+            Finalize Exit
           </Button>
         </div>
         <style jsx>{`
