@@ -40,6 +40,10 @@ export default class MyDocument extends Document {
               border-radius: 4px;
               font-size: 1.6rem;
             }
+            
+            a {
+              text-decoration: none;
+            }
           `}</style>
         </Head>
         <body>

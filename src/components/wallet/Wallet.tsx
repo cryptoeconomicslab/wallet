@@ -113,18 +113,18 @@ class WalletCard extends React.Component<StateProps & DispatchProps, State> {
           <section className="link-section">
             <div className="link-card">
               <Link prefetch href="/transfer">
-                <button className="link-button">
+                <a className="link-button">
                   <TiArrowForward size={24} />
                   <span>Transfer</span>
-                </button>
+                </a>
               </Link>
             </div>
             <div className="link-card">
               <Link prefetch href="/deposit">
-                <button className="link-button">
+                <a className="link-button">
                   <TiArrowDownThick size={24} />
                   <span>Deposit</span>
-                </button>
+                </a>
               </Link>
             </div>
           </section>
