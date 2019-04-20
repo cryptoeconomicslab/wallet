@@ -25,7 +25,7 @@ export function getTokenName(tokenId: number) {
 export function getTokenMinDigits(tokenId: number, amount: BigNumber): number {
   switch (tokenId) {
     case 0:
-      return parseInt(formatEther(parseUnits(amount.toString(), 'gwei')))
+      return parseInt(formatEther(parseUnits(amount.toString(), 'gwei')), 10)
     default:
       return amount.toNumber()
   }
@@ -34,7 +34,7 @@ export function getTokenMinDigits(tokenId: number, amount: BigNumber): number {
 export function getTokenMaxDigits(tokenId: number, amount: number): number {
   switch (tokenId) {
     case 0:
-      return parseInt(formatUnits(parseEther(amount.toString()), 'gwei'))
+      return parseInt(formatUnits(parseEther(amount.toString()), 'gwei'), 10)
     default:
       return amount
   }

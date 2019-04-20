@@ -36,7 +36,9 @@ const Heading = ({
   useEffectOnce(() => {
     wallet
       .syncChildChain()
-      .then(() => setBalanceInner(getTokenMinDigits(tokenId, wallet.getBalance(tokenId))))
+      .then(() =>
+        setBalanceInner(getTokenMinDigits(tokenId, wallet.getBalance(tokenId)))
+      )
   })
 
   return (
