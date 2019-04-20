@@ -5,7 +5,7 @@ node_js:
 cache: npm
 
 script:
-  - yarn lint:ci
+  - npm run lint
 
 dist: trusty
 sudo: false
