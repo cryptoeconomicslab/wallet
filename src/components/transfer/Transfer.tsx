@@ -40,7 +40,7 @@ class TransferSection extends React.Component<StateProps & DispatchProps> {
               label="To"
               onChange={this.onChangeToAddress}
               value={to}
-              type='text'
+              type="text"
             />
             <InputControl
               label="Amount"

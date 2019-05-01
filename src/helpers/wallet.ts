@@ -2,7 +2,6 @@ import { ChamberWallet, PlasmaClient, BrowserStorage } from '@layer2/wallet'
 import { JsonRpcClient } from './jsonrpc'
 import { MQTTClient } from './mqtt'
 
-
 // TODO: add mnemonic
 interface CreateWalletArgs {
   privateKey: string
@@ -28,7 +27,7 @@ export default class WalletFactory {
       interval: 20000,
       confirmation: process.env.CONFIRMATION || 0,
       OwnershipPredicate: process.env.OWNERSHIP_PREDICATE
-    }    
+    }
     try {
       const wallet = ChamberWallet.createWalletWithPrivateKey(
         client,

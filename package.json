@@ -8,7 +8,7 @@
     "build:testnet": "NODE_ENV=testnet next build src",
     "export": "next export src",
     "tsc": "tsc",
-    "lint": "tslint ./src/**/*"
+    "lint": "tslint ./src/**/*.{ts,tsx}"
   },
   "author": {
     "name": "Cryptoeconomics Lab",
