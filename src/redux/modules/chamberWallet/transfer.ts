@@ -148,16 +148,9 @@ export const send = () => async (
   // TODO: store tokenId on redux store
   const tokenId = state.chamberWallet.wallet.selectedToken.id
   const sendAmount = getTokenMaxDigits(tokenId, amount).toString()
-  let result: ChamberResult<boolean>
-  if (isFF) {
-    result = await ref.sendFastTransferToMerchant(
-      to,
-      tokenId,
-      sendAmount
-    )
-  } else {
-    result = await ref.transfer(to, tokenId, sendAmount)
-  }
+  const result: ChamberResult<boolean> = isFF
+    ? await ref.sendFastTransferToMerchant(to, tokenId, sendAmount)
+    : await ref.transfer(to, tokenId, sendAmount)
   if (result.isOk()) {
     dispatch(transferSuccess())
   } else {
